@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import App from './App'
 import Info from './Info'
 import Points from './Points'
@@ -11,6 +11,10 @@ const songCount = 12
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <Navigate to='/answer/1' replace />,
+  },
+  {
+    path: '/answer/:id',
     element: <App songCount={songCount} />,
   },
   {

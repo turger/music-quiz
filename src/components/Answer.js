@@ -1,39 +1,38 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import './Answer.css'
 
-const Answer = ({ songNumber, setSongNumber, songCount }) => {
+const Answer = ({ songNumber, songCount }) => {
   const [artist, setArtist] = useState(localStorage.getItem(`artist-${songNumber}`) || '')
   const [song, setSong] = useState(localStorage.getItem(`song-${songNumber}`) || '')
 
+  useEffect(() => {
+    setArtist(localStorage.getItem(`artist-${songNumber}`) || '')
+    setSong(localStorage.getItem(`song-${songNumber}`) || '')
+  }, [songNumber])
+
   const navigate = useNavigate()
 
-  const handleNext = () => {
+  const handleSongChange = (isNext) => {
     localStorage.setItem(`artist-${songNumber}`, artist)
     localStorage.setItem(`song-${songNumber}`, song)
-    const nextSongNumber = songNumber + 1
-    const currentArtist = localStorage.getItem(`artist-${nextSongNumber}`) || ''
-    setArtist(currentArtist)
-    const currentSong = localStorage.getItem(`song-${nextSongNumber}`) || ''
-    setSong(currentSong)
-    setSongNumber(nextSongNumber)
+    const nextSongNumber = isNext ? songNumber + 1 : songNumber - 1
+    navigate(`/answer/${nextSongNumber}`)
     window.scrollTo(0, 0)
+  }
+
+  const handleNext = () => {
+    handleSongChange(true)
   }
 
   const handleBack = () => {
-    localStorage.setItem(`artist-${songNumber}`, artist)
-    localStorage.setItem(`song-${songNumber}`, song)
-    const previousSongNumber = songNumber - 1
-    const currentArtist = localStorage.getItem(`artist-${previousSongNumber}`) || ''
-    setArtist(currentArtist)
-    const currentSong = localStorage.getItem(`song-${previousSongNumber}`) || ''
-    setSong(currentSong)
-    setSongNumber(previousSongNumber)
-    window.scrollTo(0, 0)
+    handleSongChange(false)
   }
 
   const handleReady = () => {
+    localStorage.setItem(`artist-${songNumber}`, artist)
+    localStorage.setItem(`song-${songNumber}`, song)
     window.scrollTo(0, 0)
     navigate('/points')
   }
@@ -85,7 +84,6 @@ const Answer = ({ songNumber, setSongNumber, songCount }) => {
 
 Answer.propTypes = {
   songNumber: PropTypes.number,
-  setSongNumber: PropTypes.func,
   songCount: PropTypes.number,
 }
 

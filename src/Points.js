@@ -37,8 +37,9 @@ const Points = ({ songCount }) => {
         {[...Array(songCount)].map((e, i) => (
           <div className='Points-row' key={i}>
             <div className='Points-row-answer'>
-              <div>{i + 1}. {getArtist(i) || '🤔'} -</div>
-              <div>{getSong(i) || '🤷'}</div>
+              <p>{`${i + 1}. ${getArtist(i + 1) || '🤔'} –`}</p>
+              &nbsp;
+              <p>{getSong(i + 1) || '🤷'}</p>
             </div>
             <div className='Points-row-points'>
               {[...Array(3)].map((e, amount) => (
@@ -49,14 +50,14 @@ const Points = ({ songCount }) => {
                   key={amount}
                   onClick={() => handlePoints(i, amount)}
                 >
-                  {amount}
+                  <p>{amount}</p>
                 </div>
               ))}
             </div>
           </div>
         ))}
       </div>
-      <h3 className='Points-total'>Total points: {points}</h3>
+      <h3 className='Points-total'>Total points {points} / {songCount * 2}</h3>
     </div>
   )
 }

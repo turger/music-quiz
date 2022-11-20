@@ -18,26 +18,42 @@
 .Points-row-answer {
   display: flex;
   flex-wrap: wrap;
+  flex: 3;
 }
 
 .Points-row-points {
   display: flex;
   flex-direction: row;
   padding-left: 1rem;
+  flex: 1;
 }
 
 .Points-row-points-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: #ffffff;
   background: #123094;
   box-shadow: 5px 5px 9px rgba(12, 32, 100, 0.5), -5px -5px 9px rgba(47, 76, 173, 0.5);
   border-radius: 9px;
   text-shadow: 5px 5px 9px rgba(12, 32, 100, 0.5), -5px -5px 9px rgba(47, 76, 173, 0.5);
   padding: 4px 8px;
-  margin-left: 5px;
+  margin-left: 6px;
   margin-top: 5px;
   outline: 0;
   font-size: 1.1rem;
   font-weight: bolder;
+  width: 1rem;
+  height: 1.6rem;
+  text-align: center;
+}
+
+.Points-row-points-button:first-child {
+  margin-left: 0;
+}
+
+p {
+  margin: initial;
 }
 
 .Points-row-points-button.selected {
