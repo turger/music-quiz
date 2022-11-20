@@ -6,18 +6,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-html,
 body,
 #root {
   margin: 0;
   padding: 0;
-  height: 100%;
-  width: 100%;
-}
-
-:root {
   background-color: hsla(226, 78%, 33%, 1);
   color: #fff;
+  height: 90vh;
+  width: 100vw;
 }
 
 code {

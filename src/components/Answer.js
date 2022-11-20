@@ -18,6 +18,7 @@ const Answer = ({ songNumber, setSongNumber, songCount }) => {
     const currentSong = localStorage.getItem(`song-${nextSongNumber}`) || ''
     setSong(currentSong)
     setSongNumber(nextSongNumber)
+    window.scrollTo(0, 0)
   }
 
   const handleBack = () => {
@@ -29,18 +30,20 @@ const Answer = ({ songNumber, setSongNumber, songCount }) => {
     const currentSong = localStorage.getItem(`song-${previousSongNumber}`) || ''
     setSong(currentSong)
     setSongNumber(previousSongNumber)
+    window.scrollTo(0, 0)
   }
 
   const handleReady = () => {
+    window.scrollTo(0, 0)
     navigate('/points')
   }
 
   return (
     <div className='Answer'>
-      {songNumber}
       <div className='Answer-artist'>
-        <label htmlFor='artist'>Artist</label>
+        <h1 htmlFor='artist'>Artist</h1>
         <input
+          className='Answer-input'
           type='text'
           id='artist'
           name='artist'
@@ -49,8 +52,9 @@ const Answer = ({ songNumber, setSongNumber, songCount }) => {
         />
       </div>
       <div className='Answer-song'>
-        <label htmlFor='song'>Song name</label>
+        <h1 htmlFor='artist'>Song name</h1>
         <input
+          className='Answer-input'
           type='text'
           id='song'
           name='song'
@@ -58,20 +62,22 @@ const Answer = ({ songNumber, setSongNumber, songCount }) => {
           onChange={(e) => setSong(e.target.value)}
         />
       </div>
+      <div className='Answer-submit-buttons'>
+        {songNumber < songCount && (
+          <button onClick={handleNext} className='Answer-next'>
+            Next
+          </button>
+        )}
+        {songNumber === songCount && (
+          <button onClick={handleReady} className='Answer-ready'>
+            Ready
+          </button>
+        )}
+      </div>
       {songNumber > 1 && (
-        <button onClick={handleBack} className='Answer-back'>
+        <div onClick={handleBack} className='Answer-back'>
           Back
-        </button>
-      )}
-      {songNumber < songCount && (
-        <button onClick={handleNext} className='Answer-next'>
-          Next
-        </button>
-      )}
-      {songNumber === songCount && (
-        <button onClick={handleReady} className='Answer-ready'>
-          Ready
-        </button>
+        </div>
       )}
     </div>
   )

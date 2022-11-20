@@ -11,11 +11,11 @@ function Info({ songCount }) {
       <h1>Christmas song music quiz</h1>
       <h3>Theme: famous artist christmas songs</h3>
       <h4>Song count: {songCount}</h4>
-      <div className='Info-url'>Go to: {url}</div>
+      <h3 className='Info-url'>{url}</h3>
       <div className='Info-qr'>
         <QRCode
           value={url}
-          style={{ width: 'auto', maxHeight: '100%', height: '100%' }}
+          style={{ width: 'auto', maxWidth: '100%', maxHeight: '100%', height: '100%' }}
           viewBox={'0 0 256 256'}
         />
       </div>
@@ -24,7 +24,7 @@ function Info({ songCount }) {
 }
 
 Info.propTypes = {
-  songCount: PropTypes.number
+  songCount: PropTypes.number,
 }
 
 export default Info

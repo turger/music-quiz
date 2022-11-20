@@ -1,2 +1,68 @@
 .Answer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: initial;
+}
+
+.Answer-input {
+  width: 287px;
+  height: 49px;
+  background: #123094;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  box-shadow: inset 9px 9px 12px rgba(12, 32, 100, 0.5), inset -9px -9px 12px rgba(47, 76, 173, 0.5);
+  -webkit-appearance: none;
+  border-radius: 9px;
+  padding-left: 5px;
+}
+
+.Answer-submit-buttons {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.Answer-next,
+.Answer-ready {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5rem;
+  width: 10rem;
+  height: 4rem;
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 41px;
+  color: #fff;
+  background: #123094;
+  box-shadow: 5px 5px 9px rgba(12, 32, 100, 0.5), -5px -5px 9px rgba(255, 255, 255, 0.1);
+  -webkit-appearance: none;
+  border-radius: 9px;
+  border: none;
+}
+
+.Answer-ready {
+  width: 8.5rem;
+}
+
+.Answer-back {
+  font-size: 20px;
+  color: #fff;
+  border: none;
+  margin: 3rem;
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 420px) {
+  .Answer-back {
+    margin: 1rem 0 0 0;
+  }
+
+  .Answer-next,
+  .Answer-ready {
+    margin-top: 3rem;
+  }
+
 }

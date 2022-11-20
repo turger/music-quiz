@@ -29,8 +29,12 @@ REACT_APP_MESSAGINGSENDERID=
 
 ## Try it out! 🔥
 
-TODO
+https://music-quiz-wd.web.app
 
-## Next steps:
+## TODO:
 
--
+- Use database instead of local storage.
+- Player name and points are saved to DB.
+- Admin page where game master can set the correct answers and fix points for users if needed.
+- Automatically calculate points based on answers, 80% text correctness is enough.
+- Status / info page, where top 5 player's points status can be seen during the game.
