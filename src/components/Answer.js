@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useNavigate } from 'react-router-dom'
 import './Answer.css'
 
 const Answer = ({ songNumber, setSongNumber, songCount }) => {
   const [artist, setArtist] = useState(localStorage.getItem(`artist-${songNumber}`) || '')
   const [song, setSong] = useState(localStorage.getItem(`song-${songNumber}`) || '')
+
+  const navigate = useNavigate()
 
   const handleNext = () => {
     localStorage.setItem(`artist-${songNumber}`, artist)
@@ -29,7 +32,7 @@ const Answer = ({ songNumber, setSongNumber, songCount }) => {
   }
 
   const handleReady = () => {
-    // TODO points counting
+    navigate('/points')
   }
 
   return (
@@ -55,9 +58,21 @@ const Answer = ({ songNumber, setSongNumber, songCount }) => {
           onChange={(e) => setSong(e.target.value)}
         />
       </div>
-      {songNumber > 1 && <button onClick={handleBack} className='Answer-back'>Back</button>}
-      {songNumber < songCount && <button onClick={handleNext} className='Answer-next'>Next</button>}
-      {songNumber === songCount && <button onClick={handleReady} className='Answer-ready'>Ready</button>}
+      {songNumber > 1 && (
+        <button onClick={handleBack} className='Answer-back'>
+          Back
+        </button>
+      )}
+      {songNumber < songCount && (
+        <button onClick={handleNext} className='Answer-next'>
+          Next
+        </button>
+      )}
+      {songNumber === songCount && (
+        <button onClick={handleReady} className='Answer-ready'>
+          Ready
+        </button>
+      )}
     </div>
   )
 }
@@ -65,7 +80,7 @@ const Answer = ({ songNumber, setSongNumber, songCount }) => {
 Answer.propTypes = {
   songNumber: PropTypes.number,
   setSongNumber: PropTypes.func,
-  songCount: PropTypes.number
+  songCount: PropTypes.number,
 }
 
 export default Answer

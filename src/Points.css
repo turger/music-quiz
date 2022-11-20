@@ -1,0 +1,11 @@
+.Points {}
+
+.Points-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.Points-row-points {
+  display: flex;
+  flex-direction: row;
+}
