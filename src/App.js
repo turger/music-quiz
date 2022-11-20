@@ -1,14 +1,10 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import Answer from './components/Answer'
 import './App.css'
 
-const songCount = 12
-
-const App = () => {
+const App = ({ songCount }) => {
   const [songNumber, setSongNumber] = useState(1)
-
-  localStorage.setItem('songCount', songCount)
-
   return (
     <div className='App'>
       <div className='App-header'>Music quiz</div>
@@ -18,6 +14,10 @@ const App = () => {
       </div>
     </div>
   )
+}
+
+App.propTypes = {
+  songCount: PropTypes.number
 }
 
 export default App

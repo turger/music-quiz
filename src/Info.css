@@ -1,3 +1,15 @@
 .Info {
   text-align: center;
+  height: 100%;
+}
+
+.Info-url {
+  padding: 30px;
+}
+
+.Info-qr {
+  width: auto;
+  margin: 0 auto;
+  max-height: 60vh;
+  height: 100%;
 }

@@ -6,18 +6,20 @@ import App from './App'
 import Info from './Info'
 import Points from './Points'
 
+const songCount = 12
+
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <App songCount={songCount} />,
   },
   {
     path: '/info',
-    element: <Info />,
+    element: <Info songCount={songCount} />,
   },
   {
     path: '/points',
-    element: <Points />,
+    element: <Points songCount={songCount} />,
   },
 ])
 

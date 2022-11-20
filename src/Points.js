@@ -1,15 +1,16 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import './Points.css'
 
-const Points = () => {
-  const songCount = localStorage.getItem('songCount')
-  const songCountNum = songCount ? parseInt(songCount) : 1
-
+const Points = ({ songCount }) => {
   const storedPoints = localStorage.getItem('pointsArray')
-  const storedPointsArray = storedPoints.split(',').map(Number)
+  const initialPointsArray = [...Array(songCount)].map(() => 0)
+  const storedPointsArray = storedPoints ? storedPoints.split(',').map(Number) : initialPointsArray
 
-  const [pointsArray, setPointsArray] = useState(storedPointsArray || [...Array(songCountNum)].map(() => 0))
-  const [points, setPoints] = useState(pointsArray ? pointsArray.reduce((a, b) => Number(a) + Number(b), 0) : 0)
+  const calculatePoints = () => pointsArray ? pointsArray.reduce((a, b) => Number(a) + Number(b), 0) : 0
+
+  const [pointsArray, setPointsArray] = useState(storedPointsArray || initialPointsArray)
+  const [points, setPoints] = useState(calculatePoints())
 
   const getArtist = (i) => {
     return localStorage.getItem(`artist-${i}`) || ''
@@ -24,20 +25,20 @@ const Points = () => {
     updatedPointsArray[i] = amount
     setPointsArray(updatedPointsArray)
     localStorage.setItem('pointsArray', updatedPointsArray)
-    setPoints(pointsArray.reduce((a, b) => Number(a) + Number(b), 0))
+    setPoints(calculatePoints())
   }
 
   return (
     <div className='Points'>
       <div className='Points-points'>
-        {[...Array(songCountNum)].map((e, i) => (
+        {[...Array(songCount)].map((e, i) => (
           <div className='Points-row' key={i}>
             <div className='Points-row-num'>{i + 1}.</div>
             <div className='Points-row-artist'>{getArtist(i) || '🤔'}</div>
             {'-'}
             <div className='Points-row-song'>{getSong(i) || '🤷'}</div>
             <div className='Points-row-points'>
-              <button onClick={() => handlePoints(i, 0)}>0</button>
+              <button className='' onClick={() => handlePoints(i, 0)}>0</button>
               <button onClick={() => handlePoints(i, 1)}>1</button>
               <button onClick={() => handlePoints(i, 2)}>2</button>
               <div className='Points-row-points-selected'>{pointsArray[i]}</div>
@@ -48,6 +49,10 @@ const Points = () => {
       <div className='Points-total'>Total points: {points}</div>
     </div>
   )
+}
+
+Points.propTypes = {
+  songCount: PropTypes.number,
 }
 
 export default Points
