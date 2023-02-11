@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
 import { useParams } from 'react-router-dom'
 import Answer from './components/Answer'
 import './App.css'
 
-const App = ({ songCount }) => {
+type AppProps = {
+  songCount: number
+}
+
+const App = ({ songCount }: AppProps) => {
   const { id } = useParams()
   const songNumber = Number(id)
 
@@ -17,10 +20,6 @@ const App = ({ songCount }) => {
       <Answer songNumber={songNumber} songCount={songCount} />
     </div>
   )
-}
-
-App.propTypes = {
-  songCount: PropTypes.number,
 }
 
 export default App

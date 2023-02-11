@@ -1,8 +1,12 @@
-import './Info.css'
-import PropTypes from 'prop-types'
+import React from 'react'
 import QRCode from 'react-qr-code'
+import './Info.css'
 
-function Info({ songCount }) {
+type InfoProps = {
+  songCount: number
+}
+
+const Info = ({ songCount }: InfoProps) => {
   const path = window.location.pathname
   const url = window.location.href.split(path)[0]
 
@@ -21,10 +25,6 @@ function Info({ songCount }) {
       </div>
     </div>
   )
-}
-
-Info.propTypes = {
-  songCount: PropTypes.number,
 }
 
 export default Info

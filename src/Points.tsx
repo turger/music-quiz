@@ -1,9 +1,12 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react'
 import cx from 'classnames'
 import './Points.css'
 
-const Points = ({ songCount }) => {
+type PointsProps = {
+  songCount: number
+}
+
+const Points = ({songCount}: PointsProps) => {
   const storedPoints = localStorage.getItem('pointsArray')
   const initialPointsArray = [...Array(songCount)].map(() => 0)
   const storedPointsArray = storedPoints ? storedPoints.split(',').map(Number) : initialPointsArray
@@ -14,19 +17,19 @@ const Points = ({ songCount }) => {
   const [pointsArray, setPointsArray] = useState(storedPointsArray || initialPointsArray)
   const [points, setPoints] = useState(calculatePoints())
 
-  const getArtist = (i) => {
+  const getArtist = (i: number) => {
     return localStorage.getItem(`artist-${i}`) || ''
   }
 
-  const getSong = (i) => {
+  const getSong = (i: number) => {
     return localStorage.getItem(`song-${i}`) || ''
   }
 
-  const handlePoints = (i, amount) => {
+  const handlePoints = (i: number, amount: number) => {
     const updatedPointsArray = pointsArray
     updatedPointsArray[i] = amount
     setPointsArray(updatedPointsArray)
-    localStorage.setItem('pointsArray', updatedPointsArray)
+    localStorage.setItem('pointsArray', updatedPointsArray.toString())
     setPoints(calculatePoints())
   }
 
@@ -60,10 +63,6 @@ const Points = ({ songCount }) => {
       <h3 className='Points-total'>Total points {points} / {songCount * 2}</h3>
     </div>
   )
-}
-
-Points.propTypes = {
-  songCount: PropTypes.number,
 }
 
 export default Points

@@ -1,9 +1,13 @@
-import { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './Answer.css'
 
-const Answer = ({ songNumber, songCount }) => {
+type AnswerProps = {
+  songNumber: number,
+  songCount: number,
+}
+
+const Answer = ({ songNumber, songCount }: AnswerProps) => {
   const [artist, setArtist] = useState(localStorage.getItem(`artist-${songNumber}`) || '')
   const [song, setSong] = useState(localStorage.getItem(`song-${songNumber}`) || '')
 
@@ -14,7 +18,7 @@ const Answer = ({ songNumber, songCount }) => {
 
   const navigate = useNavigate()
 
-  const handleSongChange = (isNext) => {
+  const handleSongChange = (isNext: boolean) => {
     localStorage.setItem(`artist-${songNumber}`, artist)
     localStorage.setItem(`song-${songNumber}`, song)
     const nextSongNumber = isNext ? songNumber + 1 : songNumber - 1
@@ -40,7 +44,7 @@ const Answer = ({ songNumber, songCount }) => {
   return (
     <div className='Answer'>
       <div className='Answer-artist'>
-        <h1 htmlFor='artist'>Artist</h1>
+        <label htmlFor='artist'>Artist</label>
         <input
           className='Answer-input'
           type='text'
@@ -51,7 +55,7 @@ const Answer = ({ songNumber, songCount }) => {
         />
       </div>
       <div className='Answer-song'>
-        <h1 htmlFor='artist'>Song name</h1>
+        <label htmlFor='artist'>Song name</label>
         <input
           className='Answer-input'
           type='text'
@@ -80,11 +84,6 @@ const Answer = ({ songNumber, songCount }) => {
       )}
     </div>
   )
-}
-
-Answer.propTypes = {
-  songNumber: PropTypes.number,
-  songCount: PropTypes.number,
 }
 
 export default Answer
