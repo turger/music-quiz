@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import './Answer.css'
 
 type AnswerProps = {
-  songNumber: number,
-  songCount: number,
+  songNumber: number
+  songCount: number
 }
 
 const Answer = ({ songNumber, songCount }: AnswerProps) => {
@@ -43,7 +43,7 @@ const Answer = ({ songNumber, songCount }: AnswerProps) => {
 
   return (
     <div className='Answer'>
-      <div className='Answer-artist'>
+      <div>
         <label htmlFor='artist'>Artist</label>
         <input
           className='Answer-input'
@@ -54,7 +54,7 @@ const Answer = ({ songNumber, songCount }: AnswerProps) => {
           onChange={(e) => setArtist(e.target.value)}
         />
       </div>
-      <div className='Answer-song'>
+      <div>
         <label htmlFor='artist'>Song name</label>
         <input
           className='Answer-input'

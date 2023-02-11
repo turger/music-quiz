@@ -1,0 +1,7 @@
+.Header {
+  font-size: 5rem;
+  margin: 0 0 1rem 0;
+  color: #123094;
+  text-shadow: -3px -3px 9px rgba(255, 255, 255, 0.2), 3px 3px 9px rgba(12, 32, 100, 0.7);
+  outline: none;
+}

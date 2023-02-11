@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import App from './App'
 import Info from './Info'
 import Points from './Points'
+import Admin from './admin/Admin'
 
 const songCount: number = 12
 
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: '/points',
     element: <Points songCount={songCount} />,
+  },
+  {
+    path: '/admin',
+    element: <Admin />,
   },
 ])
 
