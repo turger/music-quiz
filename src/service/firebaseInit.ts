@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp } from '@firebase/app'
-import { connectDatabaseEmulator, getDatabase } from '@firebase/database'
+import { getDatabase } from '@firebase/database'
 import { getAuth, GoogleAuthProvider } from '@firebase/auth'
 
 const firebaseConfig = {
@@ -16,11 +16,6 @@ const getFirebaseApp = () =>
   getApps().length === 0 ? initializeApp(firebaseConfig) : getApp()
 
 const db = getDatabase(getFirebaseApp())
-
-if (window.location.hostname === 'localhost') {
-  // Point to the realtime database emulator running on localhost.
-  connectDatabaseEmulator(db, 'localhost', 9001) 
-}
 
 const getFirebaseDB = () => db
 

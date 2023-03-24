@@ -55,7 +55,7 @@ const Answer = ({ songNumber, songCount }: AnswerProps) => {
         />
       </div>
       <div>
-        <label htmlFor='artist'>Song name</label>
+        <label htmlFor='song'>Song name</label>
         <input
           className='Answer-input'
           type='text'
