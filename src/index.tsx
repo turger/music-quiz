@@ -7,7 +7,7 @@ import Info from './Info'
 import Points from './Points'
 import Admin from './admin/Admin'
 
-const songCount: number = 12
+const songCount = 12
 
 const router = createBrowserRouter([
   {
@@ -16,7 +16,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/answer/:id',
-    element: <App songCount={songCount} />,
+    element: <App gameId={'ABCG'} />,
   },
   {
     path: '/info',

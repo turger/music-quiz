@@ -2,7 +2,7 @@ import type { User } from '@firebase/auth'
 
 export type FirebaseUser = User | undefined | null
 
-export type UserGame = {
+export type Game = {
   id: string,
   created: number,
   name: string,
@@ -10,7 +10,8 @@ export type UserGame = {
 }
 
 export type Song = {
-  id: number,
+  id: string,
   artist: string,
-  name: string
+  name: string,
+  created: number
 }

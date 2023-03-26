@@ -1,20 +1,39 @@
-.Game-editor {
+.game-editor {
   display: flex;
   flex-direction: column;
 }
 
-.Game-form-row {
+.game-form-row {
+  display: flex;
+  align-items: center;
+}
+
+.game-form-row-content {
   display: flex;
   flex-direction: column;
   margin: 20px;
+  align-items: self-end;
+  justify-content: space-between;
+  line-height: 1.8rem;
 }
 
-label {
+.game-form-row-content > label {
   font-size: 18px;
   margin: 0;
 }
 
-input {
+.game-form-row-content > label > input {
   margin: 0 20px;
   padding: 0 20px;
+}
+
+.game-form-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-form-actions :first-child {
+  margin-bottom: 1rem;
+  display: flex;
 }

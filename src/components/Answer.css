@@ -1,11 +1,18 @@
 .Answer {
   display: flex;
   flex-direction: column;
-  align-items: center;
   text-align: initial;
+  width: 55vw;
 }
 
-label {
+.Answer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1em;
+}
+
+.Answer-content>label {
   font-size: 2em;
   margin-top: 0.67em;
   margin-bottom: 0.67em;
@@ -31,6 +38,7 @@ label {
   display: flex;
   justify-content: space-around;
   width: 100%;
+  align-items: center;
 }
 
 .Answer-next,
@@ -57,16 +65,34 @@ label {
 }
 
 .Answer-back {
-  font-size: 20px;
+  font-weight: 700;
+  font-size: 30px;
   color: #fff;
   border: none;
-  margin: 3rem;
+  margin: 5rem 3rem 0 3rem;
   text-decoration: underline;
 }
 
 @media screen and (max-width: 420px) {
+  .Answer {
+    width: initial;
+  }
+
+  .Answer-content {
+    flex-direction: column;
+  }
+
+  .Answer-content>label {
+    align-self: start;
+    margin-bottom: 1rem !important;
+  }
+
+  .Answer-input {
+    margin: initial;
+  }
+
   .Answer-back {
-    margin: 1rem 0 0 0;
+    margin: 3rem 1rem 0 0;
   }
 
   .Answer-next,

@@ -4,16 +4,20 @@ import './Answer.css'
 
 type AnswerProps = {
   songNumber: number
-  songCount: number
+  gameId: string
 }
 
-const Answer = ({ songNumber, songCount }: AnswerProps) => {
+const Answer = ({ songNumber, gameId }: AnswerProps) => {
   const [artist, setArtist] = useState(localStorage.getItem(`artist-${songNumber}`) || '')
   const [song, setSong] = useState(localStorage.getItem(`song-${songNumber}`) || '')
+  const [songCount, setSongCount] = useState(0)
+  const [game, setGame] = useState()
 
   useEffect(() => {
     setArtist(localStorage.getItem(`artist-${songNumber}`) || '')
     setSong(localStorage.getItem(`song-${songNumber}`) || '')
+
+
   }, [songNumber])
 
   const navigate = useNavigate()
@@ -41,9 +45,17 @@ const Answer = ({ songNumber, songCount }: AnswerProps) => {
     navigate('/points')
   }
 
+  if (!songCount && !game) {
+    return (
+      <div className='Answer'>
+        No game found
+      </div>
+    )
+  }
+
   return (
     <div className='Answer'>
-      <div>
+      <div className='Answer-content'>
         <label htmlFor='artist'>Artist</label>
         <input
           className='Answer-input'
@@ -54,7 +66,7 @@ const Answer = ({ songNumber, songCount }: AnswerProps) => {
           onChange={(e) => setArtist(e.target.value)}
         />
       </div>
-      <div>
+      <div className='Answer-content'>
         <label htmlFor='song'>Song name</label>
         <input
           className='Answer-input'
@@ -66,6 +78,11 @@ const Answer = ({ songNumber, songCount }: AnswerProps) => {
         />
       </div>
       <div className='Answer-submit-buttons'>
+        {songNumber > 1 && (
+          <div onClick={handleBack} className='Answer-back'>
+            Back
+          </div>
+        )}
         {songNumber < songCount && (
           <button onClick={handleNext} className='Answer-next'>
             Next
@@ -77,11 +94,7 @@ const Answer = ({ songNumber, songCount }: AnswerProps) => {
           </button>
         )}
       </div>
-      {songNumber > 1 && (
-        <div onClick={handleBack} className='Answer-back'>
-          Back
-        </div>
-      )}
+  
     </div>
   )
 }

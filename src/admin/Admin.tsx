@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import cx from 'classnames'
+import ShortUniqueId from 'short-unique-id'
 import { signInWithRedirect, getRedirectResult, User } from '@firebase/auth'
 import { getFirebaseAuth, GAProvider } from '../service/firebaseInit'
 import { getUserGames, writeGameData } from '../service/firebaseDB'
-import { FirebaseUser, UserGame } from '../types'
+import { FirebaseUser, Game } from '../types'
 
 import './Admin.css'
 import '../Styles.css'
@@ -14,21 +15,21 @@ const Admin = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [modify, setModify] = useState<string[]>([])
-  const [userGames, setUserGames] = useState<UserGame[] | undefined>([])
+  const [userGames, setUserGames] = useState<Game[] | undefined>([])
 
   useEffect(() => {
     const authUser: FirebaseUser = getFirebaseAuth().currentUser
     setUser(authUser)
   })
 
-  useEffect(() => {
-    if (user) {
-      const fetchData = async () => {
-        const userGames = await getUserGames(user.uid)
-        setUserGames(userGames)
-      }
-      fetchData()
+  const fetchGames = async () => {
+    if(user) {
+      const userGames = await getUserGames(user.uid)
+      setUserGames(userGames)
     }
+  }
+  useEffect(() => {
+      fetchGames()
   }, [user])
 
   useEffect(() => {
@@ -59,31 +60,50 @@ const Admin = () => {
     return new Date(date).toLocaleDateString()
   }
 
-  const createGame = () => {
-    if (user) {
-      writeGameData('XYZI', user?.uid)
-    }
-  }
-
   const handleOpenForm = (id: string) => {
     setModify([...modify, id])
+    console.log("AVATYTYU")
   }
 
   const handleCloseForm = (id: string) => {
-    setModify(modify.filter(nextId => nextId !== id))
+    setModify(modify.filter((nextId) => nextId !== id))
   }
 
-  const gameItem = (game: UserGame) => {
+  const createGame = async () => {
+    if (user) {
+      const gameuUid = new ShortUniqueId({ length: 4, dictionary: 'alpha_upper' })
+      const newGameUuid = gameuUid()
+      writeGameData(newGameUuid, user?.uid)
+      await fetchGames()
+      handleOpenForm(newGameUuid)
+    }
+  }
+
+  const gameItem = (game: Game) => {
+    if (!userGames) {
+      return null
+    }
+
     const modifying = modify.includes(game.id)
 
     return (
-      <div className={cx('Game-item', { 'Game-modify': modifying })} key={game.id} onClick={() => !modifying && handleOpenForm(game.id)}>
-        <div className='Game-item-details'>
+      <div
+        className={cx('game-item', { 'game-modify': modifying })}
+        key={game.id}
+        onClick={() => !modifying && handleOpenForm(game.id)}
+      >
+        <div className='game-item-details' onClick={() => modifying && handleCloseForm(game.id)}>
           <p>{parseDate(game.created)}</p>
           <p>{game.name}</p>
         </div>
-        {modifying && userGames && <GameEditor game={userGames[0]} user={user} />}
-        {modifying && <button onClick={() => handleCloseForm(game.id)}>Close</button>}
+        {modifying && userGames && (
+          <GameEditor game={userGames.find((ug) => ug.id === game.id) as Game} user={user} />
+        )}
+        {modifying && (
+          <button className='small-button' onClick={() => handleCloseForm(game.id)}>
+            Close
+          </button>
+        )}
       </div>
     )
   }
@@ -93,18 +113,22 @@ const Admin = () => {
   }
 
   return (
-    <div className='Admin'>
+    <div className='admin'>
       {error && <div>{error}</div>}
       {user ? (
         <>
-          <div className='Header'>Howdy {user.displayName}</div>
-          <button onClick={() => createGame()} className='New-game'>Plan a new game</button>
-          {userGames && userGames.length > 0 && userGames.map(game => gameItem(game))}
+          <div className='header'>Howdy {user.displayName}</div>
+          <button onClick={() => createGame()} className='new-game'>
+            Plan a new game
+          </button>
+          {userGames && userGames.length > 0 && userGames.sort((a,b) => b.created - a.created).map((game) => gameItem(game))}
         </>
       ) : (
-        <div className='Admin'>
-          <h1 className='Header'>Login</h1>
-          <button className='Login-button' onClick={() => loginWithGoogle()}>Login with Google</button>
+        <div className='admin'>
+          <h1 className='header'>Login</h1>
+          <button className='login-button' onClick={() => loginWithGoogle()}>
+            Login with Google
+          </button>
         </div>
       )}
     </div>

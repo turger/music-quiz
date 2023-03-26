@@ -4,10 +4,10 @@ import Answer from './components/Answer'
 import './App.css'
 
 type AppProps = {
-  songCount: number
+  gameId: string
 }
 
-const App = ({ songCount }: AppProps) => {
+const App = ({ gameId }: AppProps) => {
   const { id } = useParams()
   const songNumber = Number(id)
 
@@ -17,7 +17,7 @@ const App = ({ songCount }: AppProps) => {
       <div className='App-song-number'>
         <h1 className='App-song-number-text'>{songNumber}.</h1>
       </div>
-      <Answer songNumber={songNumber} songCount={songCount} />
+      <Answer songNumber={songNumber} gameId={gameId} />
     </div>
   )
 }

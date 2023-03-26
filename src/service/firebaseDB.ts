@@ -1,5 +1,5 @@
-import { ref, child, get, set, serverTimestamp } from 'firebase/database'
-import { Song, UserGame } from '../types'
+import { ref, onValue, child, get, set, serverTimestamp } from 'firebase/database'
+import { Song, Game } from '../types'
 
 import { getFirebaseDB } from './firebaseInit'
 
@@ -15,12 +15,12 @@ export const writeGameData = (gameId: string, userUid: string) => {
   })
 }
 
-export const getUserGames = (userUid: string): Promise<UserGame[]> => {
+export const getUserGames = (userUid: string): Promise<Game[]> => {
   return new Promise(function (resolve, reject) {
     get(child(dbRef, `${userUid}/games`)).then((snapshot: any) => {
       if (snapshot.exists()) {
         const response = snapshot.val()
-        const userGames = Object.keys(response).map(key => response[key]) as UserGame[]
+        const userGames = Object.keys(response).map(key => response[key]) as Game[]
         return resolve(userGames)
       } else {
         console.error('No user games available')
@@ -38,15 +38,15 @@ export const writeSongs = (gameId: string, userUid: string, songs: Song[]) => {
 
 export const getSongs = (gameId: string, userUid: string): Promise<Song[]> => {
   return new Promise(function (resolve, reject) {
-    get(child(dbRef, `${userUid}/games${gameId}/songs`)).then((snapshot: any) => {
+    get(child(dbRef, `${userUid}/games/${gameId}/songs`)).then((snapshot: any) => {
       if (snapshot.exists()) {
         const response = snapshot.val()
-        console.log('songs response', response)
-        return resolve([])
+        const songs = Object.keys(response).map(key => response[key]) as Song[]
+        return resolve(songs)
       } else {
         return resolve([])
       }
-    }).catch((error: any) => {
+    }).catch((error: Error) => {
       console.error(error)
       return reject()
     })

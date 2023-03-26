@@ -1,11 +1,12 @@
-.Admin {
+.admin {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: initial;
+  padding: 2rem;
 }
 
-.Login-button {
+.login-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,7 +24,20 @@
   border: none;
 }
 
-.New-game {
+.login-button :active {
+  width: 287px;
+  height: 49px;
+  background: #123094;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  box-shadow: inset 9px 9px 12px rgba(12, 32, 100, 0.5), inset -9px -9px 12px rgba(47, 76, 173, 0.5);
+  -webkit-appearance: none;
+  border-radius: 9px;
+  padding-left: 5px;
+}
+
+.new-game {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,12 +55,12 @@
   border: none;
 }
 
-.Game-item {
+.game-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 2rem;
-  padding: 0 2rem;
+  padding: 0.4rem 2rem;
   width: 70%;
   height: 2em;
   font-weight: 600;
@@ -60,7 +74,7 @@
   border: none;
 }
 
-.Game-item-details {
+.game-item-details {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -70,12 +84,13 @@
   width: 100%;
 }
 
-.Game-modify {
+.game-modify {
   display: flex;
   flex-direction: column;
   width: 70%;
   height: initial;
   margin-top: 2rem;
+  padding: 0.4rem 2rem;
   box-shadow: 5px 5px 9px rgba(12, 32, 100, 0.5), -5px -5px 9px rgba(255, 255, 255, 0.1);
   -webkit-appearance: none;
   border-radius: 9px;
