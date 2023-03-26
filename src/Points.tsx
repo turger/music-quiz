@@ -1,12 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import cx from 'classnames'
+import { getGameById } from './service/firebaseDB'
+import { Game } from './types'
 import './Points.css'
 
-type PointsProps = {
-  songCount: number
-}
+const Points = () => {
+  const { gameId: gameIdParam } = useParams()
+  const gameId = gameIdParam || localStorage.getItem('gameId') || ''
 
-const Points = ({songCount}: PointsProps) => {
+  const [game, setGame] = useState<Game>()
+  const [songCount, setSongCount] = useState<number>(0)
+
+  const getAndSetGame = async (gameId: string) => {
+    const game = await getGameById(gameId) as Game
+    if (game) {
+      setGame(game)
+    }
+    return game
+  }
+
+  useEffect(() => {
+    getAndSetGame(gameId)
+  }, [])
+
+  useEffect(() => {
+    if (game && game?.songs) {
+      setSongCount(game?.songs?.length)
+    }
+  }, [game])
+
   const storedPoints = localStorage.getItem('pointsArray')
   const initialPointsArray = [...Array(songCount)].map(() => 0)
   const storedPointsArray = storedPoints ? storedPoints.split(',').map(Number) : initialPointsArray

@@ -1,32 +1,35 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { NavigateFunction } from 'react-router-dom'
+import { Game } from '../types'
 import './Answer.css'
 
 type AnswerProps = {
   songNumber: number
-  gameId: string
+  game: Game
+  navigate: NavigateFunction
 }
 
-const Answer = ({ songNumber, gameId }: AnswerProps) => {
+const Answer = ({ songNumber, game, navigate }: AnswerProps) => {
   const [artist, setArtist] = useState(localStorage.getItem(`artist-${songNumber}`) || '')
   const [song, setSong] = useState(localStorage.getItem(`song-${songNumber}`) || '')
-  const [songCount, setSongCount] = useState(0)
-  const [game, setGame] = useState()
+  const [songCount, setSongCount] = useState<number>(0)
+
+  useEffect(() => {
+    if (game && game?.songs) {
+      setSongCount(game?.songs?.length)
+    }
+  }, [game])
 
   useEffect(() => {
     setArtist(localStorage.getItem(`artist-${songNumber}`) || '')
     setSong(localStorage.getItem(`song-${songNumber}`) || '')
-
-
   }, [songNumber])
-
-  const navigate = useNavigate()
 
   const handleSongChange = (isNext: boolean) => {
     localStorage.setItem(`artist-${songNumber}`, artist)
     localStorage.setItem(`song-${songNumber}`, song)
     const nextSongNumber = isNext ? songNumber + 1 : songNumber - 1
-    navigate(`/answer/${nextSongNumber}`)
+    navigate(`/${game.id}/answer/${nextSongNumber}`, { replace: true })
     window.scrollTo(0, 0)
   }
 
@@ -42,13 +45,21 @@ const Answer = ({ songNumber, gameId }: AnswerProps) => {
     localStorage.setItem(`artist-${songNumber}`, artist)
     localStorage.setItem(`song-${songNumber}`, song)
     window.scrollTo(0, 0)
-    navigate('/points')
+    navigate(`/${game.id}/points`, { replace: true })
   }
 
-  if (!songCount && !game) {
+  if (!game) {
     return (
       <div className='Answer'>
         No game found
+      </div>
+    )
+  }
+
+  if (!songCount || songCount === 0) {
+    return (
+      <div className='Answer'>
+        No songs found
       </div>
     )
   }
@@ -94,7 +105,7 @@ const Answer = ({ songNumber, gameId }: AnswerProps) => {
           </button>
         )}
       </div>
-  
+
     </div>
   )
 }

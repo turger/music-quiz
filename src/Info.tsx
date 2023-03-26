@@ -1,20 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import QRCode from 'react-qr-code'
 import './Info.css'
 
-type InfoProps = {
-  songCount: number
-}
 
-const Info = ({ songCount }: InfoProps) => {
+const Info = () => {
+  const [gameId, setGameId] = useState('')
+
   const path = window.location.pathname
-  const url = window.location.href.split(path)[0]
+  const url = `${window.location.href.split(path)[0]}/${gameId}`
 
   return (
     <div className='Info'>
-      <h1>Christmas song music quiz</h1>
-      <h3>Theme: famous artist christmas songs</h3>
-      <h4>Song count: {songCount}</h4>
+      <h1>Music quiz</h1>
+      <div className='App-game'>
+        <label>
+          <input
+            type='text'
+            name='artist'
+            value={gameId}
+            onChange={(e) => setGameId(e.target.value.toUpperCase())}
+          />
+        </label>
+      </div>
       <h3 className='Info-url'>{url}</h3>
       <div className='Info-qr'>
         <QRCode

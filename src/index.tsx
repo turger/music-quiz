@@ -1,30 +1,32 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import App from './App'
 import Info from './Info'
 import Points from './Points'
 import Admin from './admin/Admin'
 
-const songCount = 12
-
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Navigate to='/answer/1' replace />,
+    element: <App />,
   },
   {
-    path: '/answer/:id',
-    element: <App gameId={'ABCG'} />,
+    path: ':gameId',
+    element: <App />,
+  },
+  {
+    path: ':gameId/answer/:songId',
+    element: <App />,
   },
   {
     path: '/info',
-    element: <Info songCount={songCount} />,
+    element: <Info />,
   },
   {
-    path: '/points',
-    element: <Points songCount={songCount} />,
+    path: ':gameId/points',
+    element: <Points />,
   },
   {
     path: '/admin',

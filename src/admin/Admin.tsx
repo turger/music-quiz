@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import cx from 'classnames'
 import ShortUniqueId from 'short-unique-id'
-import { signInWithRedirect, getRedirectResult, User } from '@firebase/auth'
+import { signInWithRedirect, getRedirectResult } from '@firebase/auth'
 import { getFirebaseAuth, GAProvider } from '../service/firebaseInit'
 import { getUserGames, writeGameData } from '../service/firebaseDB'
 import { FirebaseUser, Game } from '../types'
@@ -23,13 +23,13 @@ const Admin = () => {
   })
 
   const fetchGames = async () => {
-    if(user) {
+    if (user) {
       const userGames = await getUserGames(user.uid)
       setUserGames(userGames)
     }
   }
   useEffect(() => {
-      fetchGames()
+    fetchGames()
   }, [user])
 
   useEffect(() => {
@@ -62,7 +62,6 @@ const Admin = () => {
 
   const handleOpenForm = (id: string) => {
     setModify([...modify, id])
-    console.log("AVATYTYU")
   }
 
   const handleCloseForm = (id: string) => {
@@ -93,6 +92,7 @@ const Admin = () => {
         onClick={() => !modifying && handleOpenForm(game.id)}
       >
         <div className='game-item-details' onClick={() => modifying && handleCloseForm(game.id)}>
+          <p>{game.id}</p>
           <p>{parseDate(game.created)}</p>
           <p>{game.name}</p>
         </div>
@@ -121,7 +121,7 @@ const Admin = () => {
           <button onClick={() => createGame()} className='new-game'>
             Plan a new game
           </button>
-          {userGames && userGames.length > 0 && userGames.sort((a,b) => b.created - a.created).map((game) => gameItem(game))}
+          {userGames && userGames.length > 0 && userGames.sort((a, b) => b.created - a.created).map((game) => gameItem(game))}
         </>
       ) : (
         <div className='admin'>

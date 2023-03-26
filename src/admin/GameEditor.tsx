@@ -13,7 +13,7 @@ const GameEditor = ({ user, game }: { user: FirebaseUser; game: Game }) => {
   useEffect(() => {
     if (user) {
       const fetchData = async () => {
-        const songs = await getSongs(game.id, user.uid)
+        const songs = await getSongs(game.id)
         if (songs && songs.length > 0) {
           setSongs(songs)
         } else {
@@ -61,7 +61,7 @@ const GameEditor = ({ user, game }: { user: FirebaseUser; game: Game }) => {
   const onSave = (e: React.SyntheticEvent) => {
     e.preventDefault()
     if (game && user) {
-      writeSongs(game.id, user.uid, songs)
+      writeSongs(game.id, songs)
       setSaved(true)
       setTimeout(() => {
         setSaved(false)
