@@ -19,7 +19,7 @@ const App = () => {
     const game = await getGameById(gameId) as Game
     if (game) {
       setGame(game)
-      navigate(`/${game.id}/answer/${songNumber}`, { replace: true })
+      navigate(`/${game.id}/answer/${songNumber}`)
     } else if (gameId.length >= 4) {
       setError('Game not found with this id')
     }
@@ -42,13 +42,13 @@ const App = () => {
     localStorage.setItem('gameId', '')
     setGameId('')
     setGame(undefined)
-    navigate('/', { replace: true })
+    navigate('/')
   }
 
   const createNewGame = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     window.scrollTo(0, 0)
-    navigate(`/admin`, { replace: true })
+    navigate(`/admin`)
   }
 
   return (

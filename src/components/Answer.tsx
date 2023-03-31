@@ -29,7 +29,7 @@ const Answer = ({ songNumber, game, navigate }: AnswerProps) => {
     localStorage.setItem(`artist-${songNumber}`, artist)
     localStorage.setItem(`song-${songNumber}`, song)
     const nextSongNumber = isNext ? songNumber + 1 : songNumber - 1
-    navigate(`/${game.id}/answer/${nextSongNumber}`, { replace: true })
+    navigate(`/${game.id}/answer/${nextSongNumber}`)
     window.scrollTo(0, 0)
   }
 
@@ -45,7 +45,7 @@ const Answer = ({ songNumber, game, navigate }: AnswerProps) => {
     localStorage.setItem(`artist-${songNumber}`, artist)
     localStorage.setItem(`song-${songNumber}`, song)
     window.scrollTo(0, 0)
-    navigate(`/${game.id}/points`, { replace: true })
+    navigate(`/${game.id}/points`)
   }
 
   if (!game) {
