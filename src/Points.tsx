@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import cx from 'classnames'
 import { getGameById } from './service/firebaseDB'
-import { Game } from './types'
+import { AnswerField, Field, Game } from './types'
+import { getFields } from './service/firebaseDB'
 import './Points.css'
 
 const Points = () => {
@@ -11,6 +12,7 @@ const Points = () => {
 
   const [game, setGame] = useState<Game>()
   const [songCount, setSongCount] = useState<number>(0)
+  const [fields, setFields] = useState<Field[]>([])
 
   const getAndSetGame = async (gameId: string) => {
     const game = await getGameById(gameId) as Game
@@ -19,6 +21,18 @@ const Points = () => {
     }
     return game
   }
+
+  useEffect(() => {
+    if (game) {
+      const fetchData = async () => {
+        const fields = await getFields(game.id)
+        if (fields && fields.length > 0) {
+          setFields(fields)
+        }
+      }
+      fetchData()
+    }
+  }, [game])
 
   useEffect(() => {
     getAndSetGame(gameId)
@@ -40,12 +54,22 @@ const Points = () => {
   const [pointsArray, setPointsArray] = useState(storedPointsArray || initialPointsArray)
   const [points, setPoints] = useState(calculatePoints())
 
-  const getArtist = (i: number) => {
-    return localStorage.getItem(`artist-${i}`) || ''
-  }
+  const getAnswers = (i: number) => {
+    const answers = localStorage.getItem(`answers-${i}`)
 
-  const getSong = (i: number) => {
-    return localStorage.getItem(`song-${i}`) || ''
+    if (answers) {
+      const parsedAnswers: AnswerField[] = JSON.parse(answers)
+
+      const lol = fields.map(f => {
+        const answr = parsedAnswers.find((a) => a.fieldId === f.id)
+        const value = answr?.value
+        return value || '🤔'
+      })
+
+      return lol
+    }
+
+    return []
   }
 
   const handlePoints = (i: number, amount: number) => {
@@ -56,34 +80,39 @@ const Points = () => {
     setPoints(calculatePoints())
   }
 
+  const maxPoints = fields.length || 3
+
   return (
     <div className='Points'>
       <h1 className='Points-header'>Score</h1>
+      <p>{fields.map((field, i) => `${field.name} ${i + 1 !== fields.length ? ' – ' : ''}`)}</p>
       <div className='Points-points'>
-        {[...Array(songCount)].map((e, i) => (
-          <div className='Points-row' key={i}>
-            <div className='Points-row-answer'>
-              <p>{`${i + 1}. ${getArtist(i + 1) || '🤔'} –`}</p>
-              &nbsp;
-              <p>{getSong(i + 1) || '🤷'}</p>
+        {[...Array(songCount)].map((e, i) => {
+          const answers: string[] = getAnswers(i + 1)
+          return (
+            <div className='Points-row' key={i}>
+              <div className='Points-row-answer'>
+                {i + 1}.&nbsp;
+                {answers.map((a, j) => (<p>{a}&nbsp;{j + 1 !== answers.length ? '–' : ''}&nbsp;</p>))}
+              </div>
+              <div className='Points-row-points'>
+                {[...Array(maxPoints + 1 || 3)].map((e, amount) => (
+                  <div
+                    className={cx('Points-row-points-button', {
+                      selected: pointsArray[i] === amount,
+                    })}
+                    key={amount}
+                    onClick={() => handlePoints(i, amount)}
+                  >
+                    <p>{amount}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className='Points-row-points'>
-              {[...Array(3)].map((e, amount) => (
-                <div
-                  className={cx('Points-row-points-button', {
-                    selected: pointsArray[i] === amount,
-                  })}
-                  key={amount}
-                  onClick={() => handlePoints(i, amount)}
-                >
-                  <p>{amount}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
-      <h3 className='Points-total'>Total points {points} / {songCount * 2}</h3>
+      <h3 className='Points-total'>Total points {points} / {songCount * maxPoints}</h3>
     </div>
   )
 }

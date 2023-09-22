@@ -1,5 +1,5 @@
 import { ref, child, get, set, serverTimestamp, DataSnapshot } from 'firebase/database'
-import { Song, Game } from '../types'
+import { Song, Game, Field } from '../types'
 
 import { getFirebaseDB } from './firebaseInit'
 
@@ -48,8 +48,9 @@ export const getGameById = (gameId: string): Promise<Game | null> => {
     })
   })
 }
-export const writeSongs = (gameId: string, songs: Song[]) => {
+export const writeSongs = (gameId: string, songs: Song[], fields: Field[]) => {
   set(ref(db, `games/${gameId}/songs`), songs)
+  set(ref(db, `games/${gameId}/fields`), fields)
 }
 
 export const getSongs = (gameId: string): Promise<Song[]> => {
@@ -59,6 +60,23 @@ export const getSongs = (gameId: string): Promise<Song[]> => {
         const response = snapshot.val()
         const songs = Object.keys(response).map(key => response[key]) as Song[]
         return resolve(songs)
+      } else {
+        return resolve([])
+      }
+    }).catch((error: Error) => {
+      console.error(error)
+      return reject()
+    })
+  })
+}
+
+export const getFields = (gameId: string): Promise<Field[]> => {
+  return new Promise(function (resolve, reject) {
+    get(child(dbRef, `games/${gameId}/fields`)).then((snapshot: DataSnapshot) => {
+      if (snapshot.exists()) {
+        const response = snapshot.val()
+        const fields = Object.keys(response).map(key => response[key]) as Field[]
+        return resolve(fields)
       } else {
         return resolve([])
       }

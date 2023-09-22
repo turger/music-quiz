@@ -23,6 +23,23 @@
   border: none;
 }
 
+.large-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.6rem;
+  width: 60vw;
+  height: 3rem;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #fff;
+  background: #123094;
+  box-shadow: 5px 5px 9px rgba(12, 32, 100, 0.5), -5px -5px 9px rgba(255, 255, 255, 0.1);
+  -webkit-appearance: none;
+  border-radius: 9px;
+  border: none;
+}
+
 .plus {
   width: 3.2rem;
 }
