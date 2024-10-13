@@ -114,13 +114,15 @@ const GameEditor = ({user, game}: {user: FirebaseUser; game: Game}) => {
 
   return (
     <div className='game-editor' key={game.id}>
-      <button className='large-button' onClick={() => setModifyFieldsOpen(!modifyFieldOpen)}>Click to customize your own fields here</button>
+      <button className='large-button' onClick={() => setModifyFieldsOpen(!modifyFieldOpen)}>
+        {modifyFieldOpen ? 'Close field editing' : 'Click to customize field names'}
+      </button>
       <form className='game-form'>
         <div className='game-form-modify' hidden={!modifyFieldOpen}>
           <p>Modify custom fields</p>
           {fields.sort((a: Field, b: Field) => a.created - b.created)
             .map((field, i) => (
-              <div className='game-form-row'>
+              <div className='game-form-row' key={`form-row-${i}`}>
                 <div className='game-form-row-content'>
                   <label>
                     <input
@@ -131,18 +133,19 @@ const GameEditor = ({user, game}: {user: FirebaseUser; game: Game}) => {
                     />
                   </label>
                 </div>
-                <button className='small-button plus' onClick={(e) => removeField(e, field.id)}>
+                <button className='small-button mini' onClick={(e) => removeField(e, field.id)}>
                   –
                 </button>
               </div>
             ))}
           <div className='game-form-actions'>
-            <button className='small-button plus' onClick={(e) => addField(e)}>
+            <button className='small-button mini' onClick={(e) => addField(e)}>
               +
             </button>
           </div>
         </div>
-        {songs &&
+        {
+          songs &&
           songs
             .sort((a: Song, b: Song) => a.created - b.created)
             .map((song, i) => (
@@ -152,7 +155,7 @@ const GameEditor = ({user, game}: {user: FirebaseUser; game: Game}) => {
                   {fields.map(field => {
                     const value = song.fields ? song.fields.find(sf => sf.fieldId === field.id)?.value : ''
                     return (
-                      <label>
+                      <label key={`song-${field.id}`}>
                         {i + 1}. {field.name}
                         <input
                           type='text'
@@ -164,13 +167,17 @@ const GameEditor = ({user, game}: {user: FirebaseUser; game: Game}) => {
                     )
                   })}
                 </div>
-                <button className='small-button plus' onClick={(e) => removeSong(e, song.id)}>
-                  –
-                </button>
+                <div className="game-form-row-remove">
+                  <button className='small-button mini' onClick={(e) => removeSong(e, song.id)}>
+                    –
+                  </button>
+                  Remove Song {i + 1}
+                </div>
               </div>
-            ))}
+            ))
+        }
         <div className='game-form-actions'>
-          <button className='small-button plus' onClick={(e) => addSong(e)}>
+          <button className='small-button mini' onClick={(e) => addSong(e)}>
             +
           </button>
 

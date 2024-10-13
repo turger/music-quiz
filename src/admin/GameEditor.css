@@ -1,12 +1,7 @@
 .game-editor {
   display: flex;
   flex-direction: column;
-}
-
-.game-form-modify {
-  border: 1px solid greenyellow;
-  border-radius: 40px;
-  padding: 20px;
+  align-items: center;
 }
 
 .game-add-new-fields {
@@ -16,20 +11,51 @@
 .game-form-row {
   display: flex;
   align-items: center;
+  flex-direction: column;
+}
+
+.game-form-modify {
+  border: 1px solid white;
+  border-radius: 40px;
+  padding: 20px;
+  background-color: #123094;
+
+  .game-form-row {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.game-form-row-remove {
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+  align-items: center;
 }
 
 .game-form-row-content {
   display: flex;
   flex-direction: column;
   margin: 20px;
-  align-items: self-end;
   justify-content: space-between;
   line-height: 1.8rem;
+
+  @media screen and (min-width: 740px) {
+    flex-direction: column;
+    align-items: self-end;
+  }
 }
 
 .game-form-row-content>label {
+  display: flex;
+  flex-direction: column;
   font-size: 18px;
   margin: 0;
+
+  @media screen and (min-width: 740px) {
+    flex-direction: row;
+    padding-top: 10px;
+  }
 }
 
 .game-form-row-content>label>input {

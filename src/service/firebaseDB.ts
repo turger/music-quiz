@@ -1,16 +1,26 @@
-import { ref, child, get, set, serverTimestamp, DataSnapshot } from 'firebase/database'
-import { Song, Game, Field } from '../types'
+import {ref, child, get, set, serverTimestamp, DataSnapshot} from 'firebase/database'
+import {Song, Game, Field} from '../types'
+import {generateSlug} from "random-word-slugs"
 
-import { getFirebaseDB } from './firebaseInit'
+import {getFirebaseDB} from './firebaseInit'
 
 const db = getFirebaseDB()
 const dbRef = ref(getFirebaseDB())
 
 export const writeGameData = (gameId: string, userUid: string) => {
+  const gameName = generateSlug(2, {
+    format: "title",
+    partsOfSpeech: ["adjective", "noun"],
+    categories: {
+      adjective: ["appearance"],
+      noun: ["animals"],
+    },
+  })
+
   set(ref(db, `games/${gameId}`), {
     id: gameId,
     userUid,
-    name: 'Game name',
+    name: gameName,
     created: serverTimestamp()
   })
 }

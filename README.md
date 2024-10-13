@@ -31,4 +31,5 @@ https://music-quiz-wd.web.app
 - Player name and points are saved to DB.
 - Admin page where game master can set the correct answers and fix points for users if needed.
 - Automatically calculate points based on answers, 80% text correctness is enough.
-- Status / info page, where top 5 player's points status can be seen during the game.
+- Status / info page, where top 5 player's points status can be seen during the game. 
+- Possibility to edit game name

@@ -82,9 +82,9 @@ const Admin = () => {
         onClick={() => !modifying && handleOpenForm(game.id)}
       >
         <div className='game-item-details' onClick={() => modifying && handleCloseForm(game.id)}>
-          <p>{game.id}</p>
-          <p>{parseDate(game.created)}</p>
-          <p>{game.name}</p>
+          <div>{game.id}</div>
+          <div>{parseDate(game.created)}</div>
+          <div className='game-name'>{game.name}</div>
         </div>
         {modifying && userGames && (
           <GameEditor game={userGames.find((ug) => ug.id === game.id) as Game} user={user} />
