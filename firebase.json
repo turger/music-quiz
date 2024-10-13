@@ -1,8 +1,12 @@
 {
   "hosting": {
-    "public": "build",
+    "public": "dist",
     "site": "music-quiz-wd",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
       {
         "source": "**",

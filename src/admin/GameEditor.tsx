@@ -1,30 +1,30 @@
-import { useEffect, useState } from 'react'
+import {useEffect, useState} from 'react'
 import ShortUniqueId from 'short-unique-id'
-import { getSongs, getFields, writeSongs } from '../service/firebaseDB'
-import { Song, FirebaseUser, Game, Field, SongField } from '../types'
+import {getSongs, getFields, writeSongs} from '../service/firebaseDB'
+import {Song, FirebaseUser, Game, Field, SongField} from '../types'
 import './GameEditor.css'
 
-const getUid = new ShortUniqueId({ length: 5 })
+const uid = new ShortUniqueId({length: 5})
 
 const defaultFields: Field[] = [
-  { id: getUid(), created: Date.now(), name: 'Artist' },
-  { id: getUid(), created: Date.now() + 1, name: 'Song name' }
+  {id: uid.rnd(), created: Date.now(), name: 'Artist'},
+  {id: uid.rnd(), created: Date.now() + 1, name: 'Song name'}
 ]
 
-const GameEditor = ({ user, game }: { user: FirebaseUser; game: Game }) => {
+const GameEditor = ({user, game}: {user: FirebaseUser; game: Game}) => {
   const [songs, setSongs] = useState<Song[]>([])
   const [saved, setSaved] = useState(false)
   const [fields, setFields] = useState<Field[]>([])
   const [modifyFieldOpen, setModifyFieldsOpen] = useState(false)
 
   const emptyField = {
-    id: getUid(),
+    id: uid.rnd(),
     created: Date.now(),
     name: ''
   }
 
   const emptySong = {
-    id: getUid(),
+    id: uid.rnd(),
     created: Date.now(),
     fields: []
   }
@@ -69,7 +69,7 @@ const GameEditor = ({ user, game }: { user: FirebaseUser; game: Game }) => {
         updatedSongField.value = value
         updatedSong.fields = [...updatedSong.fields.filter((sf) => sf.fieldId !== fieldId), updatedSongField]
       } else {
-        updatedSong.fields = [...updatedSong.fields, { fieldId, value }]
+        updatedSong.fields = [...updatedSong.fields, {fieldId, value}]
       }
     }
 
@@ -150,10 +150,7 @@ const GameEditor = ({ user, game }: { user: FirebaseUser; game: Game }) => {
                 <div className='game-form-row-content'>
                   <p>Song {i + 1}.</p>
                   {fields.map(field => {
-                    console.log('field.id', field.id)
-                    console.log('song.fields', song.fields)
                     const value = song.fields ? song.fields.find(sf => sf.fieldId === field.id)?.value : ''
-                    console.log('****value', value)
                     return (
                       <label>
                         {i + 1}. {field.name}

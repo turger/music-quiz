@@ -1,26 +1,33 @@
-import { useState, useEffect } from 'react'
+import {useState, useEffect} from 'react'
 import cx from 'classnames'
 import ShortUniqueId from 'short-unique-id'
-import { signInWithRedirect, getRedirectResult } from '@firebase/auth'
-import { getFirebaseAuth, GAProvider } from '../service/firebaseInit'
-import { getUserGames, writeGameData } from '../service/firebaseDB'
-import { FirebaseUser, Game } from '../types'
+import {signInWithPopup} from '@firebase/auth'
+import {getFirebaseAuth, GAProvider} from '../service/firebaseInit'
+import {getUserGames, writeGameData} from '../service/firebaseDB'
+import {FirebaseUser, Game} from '../types'
 
 import './Admin.css'
 import '../Styles.css'
 import GameEditor from './GameEditor'
 
 const Admin = () => {
-  const [user, setUser] = useState<FirebaseUser>()
-  const [error, setError] = useState('')
+  const [user, setUser] = useState<FirebaseUser>(null)
   const [loading, setLoading] = useState(false)
   const [modify, setModify] = useState<string[]>([])
   const [userGames, setUserGames] = useState<Game[] | undefined>([])
 
   useEffect(() => {
-    const authUser: FirebaseUser = getFirebaseAuth().currentUser
-    setUser(authUser)
-  })
+    const auth = getFirebaseAuth()
+
+    const checkAuthState = async () => {
+      await auth.authStateReady()
+      if (auth.currentUser) {
+        setUser(auth.currentUser)
+      }
+    }
+
+    checkAuthState()
+  }, [])
 
   const fetchGames = async () => {
     if (user) {
@@ -32,27 +39,10 @@ const Admin = () => {
     fetchGames()
   }, [user])
 
-  useEffect(() => {
-    setLoading(true)
-    getRedirectResult(getFirebaseAuth())
-      .then((result) => {
-        const user = result?.user
-        setUser(user)
-        setLoading(false)
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        console.error('ERROR', errorCode, errorMessage)
-        const email = error.customData.email
-        setError(`User with email ${email} couldn't log in. Error message: ${errorMessage}`)
-        setLoading(false)
-      })
-  }, [getRedirectResult])
-
   const loginWithGoogle = async () => {
     setLoading(true)
-    await signInWithRedirect(getFirebaseAuth(), GAProvider)
+    const userCred = await signInWithPopup(getFirebaseAuth(), GAProvider)
+    setUser(userCred?.user)
     setLoading(false)
   }
 
@@ -70,8 +60,8 @@ const Admin = () => {
 
   const createGame = async () => {
     if (user) {
-      const gameuUid = new ShortUniqueId({ length: 4, dictionary: 'alpha_upper' })
-      const newGameUuid = gameuUid()
+      const uid = new ShortUniqueId({length: 4, dictionary: 'alpha_upper'})
+      const newGameUuid = uid.rnd()
       writeGameData(newGameUuid, user?.uid)
       await fetchGames()
       handleOpenForm(newGameUuid)
@@ -87,7 +77,7 @@ const Admin = () => {
 
     return (
       <div
-        className={cx('game-item', { 'game-modify': modifying })}
+        className={cx('game-item', {'game-modify': modifying})}
         key={game.id}
         onClick={() => !modifying && handleOpenForm(game.id)}
       >
@@ -114,7 +104,6 @@ const Admin = () => {
 
   return (
     <div className='admin'>
-      {error && <div>{error}</div>}
       {user ? (
         <>
           <div className='header'>Howdy {user.displayName}</div>

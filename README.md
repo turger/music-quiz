@@ -13,14 +13,7 @@ Login to firebase:
 `firebase init` for a new project.   
 Select hosting and no overwrite. Set public directory `build`.
 
-add .env file to project root:  
-REACT_APP_APIKEY=  
-REACT_APP_AUTHDOMAIN=  
-REACT_APP_DATABASEURL=  
-REACT_APP_PROJECTID=  
-REACT_APP_STORAGEBUCKET=  
-REACT_APP_MESSAGINGSENDERID=
-REACT_APP_APPID=
+add `.env` file to project root and copy items from `.env.dist` file.
 
 `npm run start`
 
