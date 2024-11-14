@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import React, {useEffect, useState} from 'react'
+import {useParams} from 'react-router-dom'
 import cx from 'classnames'
-import { getGameById } from './service/firebaseDB'
-import { AnswerField, Field, Game } from './types'
-import { getFields } from './service/firebaseDB'
+import {getFields, getGameById} from '../service/firebaseDB'
+import {AnswerField, Field, Game} from '../types'
+import {getLocalStorageAnswerItem} from './utils'
 import './Points.css'
 
 const Points = () => {
-  const { gameId: gameIdParam } = useParams()
+  const {gameId: gameIdParam} = useParams()
   const gameId = gameIdParam || localStorage.getItem('gameId') || ''
+  const localStoragePointsItem = `pointsArray-${gameId}`
 
   const [game, setGame] = useState<Game>()
   const [songCount, setSongCount] = useState<number>(0)
@@ -44,7 +45,7 @@ const Points = () => {
     }
   }, [game])
 
-  const storedPoints = localStorage.getItem('pointsArray')
+  const storedPoints = localStorage.getItem(localStoragePointsItem)
   const initialPointsArray = [...Array(songCount)].map(() => 0)
   const storedPointsArray = storedPoints ? storedPoints.split(',').map(Number) : initialPointsArray
 
@@ -55,18 +56,16 @@ const Points = () => {
   const [points, setPoints] = useState(calculatePoints())
 
   const getAnswers = (i: number) => {
-    const answers = localStorage.getItem(`answers-${i}`)
+    const answers = localStorage.getItem(getLocalStorageAnswerItem(gameId, i))
 
     if (answers) {
       const parsedAnswers: AnswerField[] = JSON.parse(answers)
 
-      const lol = fields.map(f => {
+      return fields.map(f => {
         const answr = parsedAnswers.find((a) => a.fieldId === f.id)
         const value = answr?.value
         return value || '🤔'
       })
-
-      return lol
     }
 
     return []
@@ -76,7 +75,7 @@ const Points = () => {
     const updatedPointsArray = pointsArray
     updatedPointsArray[i] = amount
     setPointsArray(updatedPointsArray)
-    localStorage.setItem('pointsArray', updatedPointsArray.toString())
+    localStorage.setItem(localStoragePointsItem, updatedPointsArray.toString())
     setPoints(calculatePoints())
   }
 

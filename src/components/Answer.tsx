@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { NavigateFunction } from 'react-router-dom'
-import { Game, Field, AnswerField } from '../types'
-import { getFields } from '../service/firebaseDB'
+import React, {useState, useEffect} from 'react'
+import {NavigateFunction} from 'react-router-dom'
+import {Game, Field, AnswerField} from '../types'
+import {getFields} from '../service/firebaseDB'
 import './Answer.css'
+import {getLocalStorageAnswerItem} from "./utils";
 
 type AnswerProps = {
   songNumber: number
@@ -10,9 +11,9 @@ type AnswerProps = {
   navigate: NavigateFunction
 }
 
-const Answer = ({ songNumber, game, navigate }: AnswerProps) => {
+const Answer = ({songNumber, game, navigate}: AnswerProps) => {
   const getAnswersFromLocalStorage = () => {
-    const answers = localStorage.getItem(`answers-${songNumber}`)
+    const answers = localStorage.getItem(getLocalStorageAnswerItem(game.id, songNumber))
 
     if (answers) {
       return JSON.parse(answers)
@@ -53,12 +54,12 @@ const Answer = ({ songNumber, game, navigate }: AnswerProps) => {
       updatedAnswer.value = value
       setAnswers([...answers.filter((a) => a.fieldId !== fieldId), updatedAnswer])
     } else {
-      setAnswers([...answers, { fieldId, value }])
+      setAnswers([...answers, {fieldId, value}])
     }
   }
 
   const handleSongChange = (isNext: boolean) => {
-    localStorage.setItem(`answers-${songNumber}`, JSON.stringify(answers))
+    localStorage.setItem(getLocalStorageAnswerItem(game.id, songNumber), JSON.stringify(answers))
 
     const nextSongNumber = isNext ? songNumber + 1 : songNumber - 1
     navigate(`/${game.id}/answer/${nextSongNumber}`)
@@ -74,7 +75,7 @@ const Answer = ({ songNumber, game, navigate }: AnswerProps) => {
   }
 
   const handleReady = () => {
-    localStorage.setItem(`answers-${songNumber}`, JSON.stringify(answers))
+    localStorage.setItem(getLocalStorageAnswerItem(game.id, songNumber), JSON.stringify(answers))
     window.scrollTo(0, 0)
     navigate(`/${game.id}/points`)
   }
@@ -108,7 +109,7 @@ const Answer = ({ songNumber, game, navigate }: AnswerProps) => {
       {fields.map(field => {
         const value = answers.find(a => a.fieldId === field.id)?.value || ''
         return (
-          <div className='Answer-content' >
+          <div className='Answer-content'>
             <label htmlFor={field.name}>{field.name}</label>
             <input
               className='Answer-input'
