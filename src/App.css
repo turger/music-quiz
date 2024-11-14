@@ -34,6 +34,10 @@
   text-shadow: 2px 2px 7px rgba(12, 32, 100, 0.5);
 }
 
+.App-exit-game {
+  margin-top: 6rem;
+}
+
 @media screen and (max-width: 4200px) {
   .App-header {
     font-size: 3.5rem;

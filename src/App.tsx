@@ -86,9 +86,9 @@ const App = () => {
             <h1 className='App-song-number-text'>{songNumber}.</h1>
           </div>
           <Answer game={game} songNumber={songNumber} navigate={navigate} />
-          <button onClick={(e) => exitGame(e)}>
-            Exit game
-          </button>
+          <span className='App-exit-game' onClick={(e) => exitGame(e)}>
+            (exit game here)
+          </span>
         </>
       )}
     </div>
