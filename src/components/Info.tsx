@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import QRCode from 'react-qr-code'
 import './Info.css'
-
 
 const Info = () => {
   const [gameId, setGameId] = useState('')
@@ -12,7 +11,7 @@ const Info = () => {
   return (
     <div className='Info'>
       <h1>Music quiz</h1>
-      <div className='App-game'>
+      <div>
         <label>
           <input
             type='text'
@@ -26,7 +25,7 @@ const Info = () => {
       <div className='Info-qr'>
         <QRCode
           value={url}
-          style={{ width: 'auto', maxWidth: '100%', maxHeight: '100%', height: '100%' }}
+          style={{width: 'auto', maxWidth: '100%', maxHeight: '100%', height: '100%'}}
           viewBox={'0 0 256 256'}
         />
       </div>
