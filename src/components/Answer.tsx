@@ -109,7 +109,7 @@ const Answer = ({songNumber, game, navigate}: AnswerProps) => {
       {fields.map(field => {
         const value = answers.find(a => a.fieldId === field.id)?.value || ''
         return (
-          <div className='Answer-content'>
+          <div className='Answer-content' key={`field-${field.id}`}>
             <label htmlFor={field.name}>{field.name}</label>
             <input
               className='Answer-input'
