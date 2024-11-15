@@ -1,18 +1,24 @@
-import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import React, {useEffect, useState} from 'react'
+import {useParams} from 'react-router-dom'
 import cx from 'classnames'
-import { getGameById } from './service/firebaseDB'
-import { AnswerField, Field, Game } from './types'
-import { getFields } from './service/firebaseDB'
+import {getFields, getGameById} from '../service/firebaseDB'
+import {AnswerField, Field, Game} from '../types'
+import {getLocalStorageAnswerItem} from './utils'
 import './Points.css'
 
 const Points = () => {
-  const { gameId: gameIdParam } = useParams()
+  const {gameId: gameIdParam} = useParams()
   const gameId = gameIdParam || localStorage.getItem('gameId') || ''
+  const localStoragePointsItem = `pointsArray-${gameId}`
+
+  const storedPointsFromStorage = localStorage.getItem(localStoragePointsItem)
+  const initialPoints = {}
+  const storedPoints = storedPointsFromStorage ? JSON.parse(storedPointsFromStorage) : initialPoints
 
   const [game, setGame] = useState<Game>()
   const [songCount, setSongCount] = useState<number>(0)
   const [fields, setFields] = useState<Field[]>([])
+  const [pointsArray, setPointsArray] = useState<{ [key: number]: number | undefined }>(storedPoints || initialPoints)
 
   const getAndSetGame = async (gameId: string) => {
     const game = await getGameById(gameId) as Game
@@ -44,40 +50,35 @@ const Points = () => {
     }
   }, [game])
 
-  const storedPoints = localStorage.getItem('pointsArray')
-  const initialPointsArray = [...Array(songCount)].map(() => 0)
-  const storedPointsArray = storedPoints ? storedPoints.split(',').map(Number) : initialPointsArray
-
-  const calculatePoints = () =>
-    pointsArray ? pointsArray.reduce((a, b) => Number(a) + Number(b), 0) : 0
-
-  const [pointsArray, setPointsArray] = useState(storedPointsArray || initialPointsArray)
-  const [points, setPoints] = useState(calculatePoints())
+  const calculatePoints = (): number | undefined =>
+    pointsArray ?
+      Object.values(pointsArray)
+        .filter(points => points)
+        .reduce((prev, current) => Number(prev) + Number(current), 0)
+      : 0
 
   const getAnswers = (i: number) => {
-    const answers = localStorage.getItem(`answers-${i}`)
+    const answers = localStorage.getItem(getLocalStorageAnswerItem(gameId, i))
 
     if (answers) {
       const parsedAnswers: AnswerField[] = JSON.parse(answers)
 
-      const lol = fields.map(f => {
+      return fields.map(f => {
         const answr = parsedAnswers.find((a) => a.fieldId === f.id)
         const value = answr?.value
         return value || '🤔'
       })
-
-      return lol
     }
 
     return []
   }
 
   const handlePoints = (i: number, amount: number) => {
-    const updatedPointsArray = pointsArray
-    updatedPointsArray[i] = amount
+    const newAmount = pointsArray[i] === amount ? undefined : amount
+    const updatedPointsArray = {...pointsArray, ...{[i]: newAmount}}
+
     setPointsArray(updatedPointsArray)
-    localStorage.setItem('pointsArray', updatedPointsArray.toString())
-    setPoints(calculatePoints())
+    localStorage.setItem(localStoragePointsItem, JSON.stringify(updatedPointsArray))
   }
 
   const maxPoints = fields.length || 3
@@ -90,29 +91,31 @@ const Points = () => {
         {[...Array(songCount)].map((e, i) => {
           const answers: string[] = getAnswers(i + 1)
           return (
-            <div className='Points-row' key={i}>
+            <div className='Points-row' key={`row-${i}`}>
               <div className='Points-row-answer'>
                 {i + 1}.&nbsp;
-                {answers.map((a, j) => (<p>{a}&nbsp;{j + 1 !== answers.length ? '–' : ''}&nbsp;</p>))}
+                {answers.map((a, j) => (
+                  <p key={`row-points-${a}-${j}`}>{a}&nbsp;{j + 1 !== answers.length ? '–' : ''}&nbsp;</p>
+                ))}
               </div>
               <div className='Points-row-points'>
-                {[...Array(maxPoints + 1 || 3)].map((e, amount) => (
+                {[...Array(maxPoints + 1 || 3)].map((e, pointsAmount) =>
                   <div
+                    key={`row-points-${pointsAmount}-${answers}`}
                     className={cx('Points-row-points-button', {
-                      selected: pointsArray[i] === amount,
+                      selected: pointsArray[i] === pointsAmount
                     })}
-                    key={amount}
-                    onClick={() => handlePoints(i, amount)}
+                    onClick={() => handlePoints(i, pointsAmount)}
                   >
-                    <p>{amount}</p>
+                    <p>{pointsAmount}</p>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           )
         })}
       </div>
-      <h3 className='Points-total'>Total points {points} / {songCount * maxPoints}</h3>
+      <h3 className='Points-total'>Total points {calculatePoints()} / {songCount * maxPoints}</h3>
     </div>
   )
 }

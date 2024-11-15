@@ -34,6 +34,40 @@
   text-shadow: 2px 2px 7px rgba(12, 32, 100, 0.5);
 }
 
+.App-exit-game {
+  margin-top: 6rem;
+}
+
+.App-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 70vh;
+}
+
+.App-game-existing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.App-game-existing > label > input {
+  display: flex;
+  flex-direction: column;
+  font-size: 2rem;
+  margin: 0;
+  height: 3rem;
+  width: 50vw;
+  text-align: center;
+
+  @media screen and (min-width: 740px) {
+    flex-direction: row;
+    padding-top: 10px;
+  }
+}
+
 @media screen and (max-width: 4200px) {
   .App-header {
     font-size: 3.5rem;

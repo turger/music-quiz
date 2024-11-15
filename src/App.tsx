@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import React, {useState, useEffect} from 'react'
+import {useParams, useNavigate} from 'react-router-dom'
 import Answer from './components/Answer'
-import { getGameById } from './service/firebaseDB'
-import { Game } from './types'
+import {getGameById} from './service/firebaseDB'
+import {Game} from './types'
 import './App.css'
 
 const App = () => {
-  const { gameId: gameIdParam, songId } = useParams()
+  const {gameId: gameIdParam, songId} = useParams()
   const songNumber = songId ? Number(songId) : 1
 
   const [gameId, setGameId] = useState(gameIdParam || localStorage.getItem('gameId') || '')
@@ -35,6 +35,11 @@ const App = () => {
       localStorage.setItem('gameId', gameId)
       getAndSetGame(gameId)
     }
+  }
+
+  const goToInfoPage = async (e: React.SyntheticEvent) => {
+    e.preventDefault()
+    navigate('/info')
   }
 
   const exitGame = async (e: React.SyntheticEvent) => {
@@ -68,13 +73,18 @@ const App = () => {
                 }}
               />
             </label>
-            <button onClick={(e) => goToGame(e)}>
+            <button className='small-button' onClick={(e) => goToGame(e)}>
               Go to game
             </button>
           </div>
           <div className='App-game-new'>
-            <button onClick={(e) => createNewGame(e)}>
+            <button className='small-button' onClick={(e) => createNewGame(e)}>
               Create a new game
+            </button>
+          </div>
+          <div className='App-game-info'>
+            <button className='small-button' onClick={(e) => goToInfoPage(e)}>
+              Go to info page
             </button>
           </div>
         </div>
@@ -85,10 +95,10 @@ const App = () => {
           <div className='App-song-number'>
             <h1 className='App-song-number-text'>{songNumber}.</h1>
           </div>
-          <Answer game={game} songNumber={songNumber} navigate={navigate} />
-          <button onClick={(e) => exitGame(e)}>
-            Exit game
-          </button>
+          <Answer game={game} songNumber={songNumber} navigate={navigate}/>
+          <span className='App-exit-game' onClick={(e) => exitGame(e)}>
+            (exit game here)
+          </span>
         </>
       )}
     </div>
