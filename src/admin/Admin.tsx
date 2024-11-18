@@ -1,14 +1,13 @@
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import cx from 'classnames'
 import ShortUniqueId from 'short-unique-id'
-import {signInWithPopup} from '@firebase/auth'
-import {getFirebaseAuth, GAProvider} from '../service/firebaseInit'
-import {getUserGames, writeGameData} from '../service/firebaseDB'
-import {FirebaseUser, Game} from '../types'
-
-import './Admin.css'
-import '../Styles.css'
+import { signInWithPopup } from '@firebase/auth'
+import { getFirebaseAuth, GAProvider } from '../service/firebaseInit'
+import { getUserGames, writeGameData } from '../service/firebaseDB'
+import Button from '../components/Button'
 import GameEditor from './GameEditor'
+import { FirebaseUser, Game } from '../types'
+import styles from './Admin.module.less'
 
 const Admin = () => {
   const [user, setUser] = useState<FirebaseUser>(null)
@@ -60,7 +59,7 @@ const Admin = () => {
 
   const createGame = async () => {
     if (user) {
-      const uid = new ShortUniqueId({length: 4, dictionary: 'alpha_upper'})
+      const uid = new ShortUniqueId({ length: 4, dictionary: 'alpha_upper' })
       const newGameUuid = uid.rnd()
       writeGameData(newGameUuid, user?.uid)
       await fetchGames()
@@ -77,23 +76,19 @@ const Admin = () => {
 
     return (
       <div
-        className={cx('game-item', {'game-modify': modifying})}
+        className={cx(styles.gameItem, modifying && styles.modify)}
         key={game.id}
         onClick={() => !modifying && handleOpenForm(game.id)}
       >
-        <div className='game-item-details' onClick={() => modifying && handleCloseForm(game.id)}>
+        <div className={styles.itemDetails} onClick={() => modifying && handleCloseForm(game.id)}>
           <div>{game.id}</div>
           <div>{parseDate(game.created)}</div>
-          <div className='game-name'>{game.name}</div>
+          <div className={styles.gameName}>{game.name}</div>
         </div>
         {modifying && userGames && (
           <GameEditor game={userGames.find((ug) => ug.id === game.id) as Game} user={user} />
         )}
-        {modifying && (
-          <button className='small-button' onClick={() => handleCloseForm(game.id)}>
-            Close
-          </button>
-        )}
+        {modifying && <Button onClick={() => handleCloseForm(game.id)} text='Close' />}
       </div>
     )
   }
@@ -103,21 +98,19 @@ const Admin = () => {
   }
 
   return (
-    <div className='admin'>
+    <div className={styles.admin}>
       {user ? (
         <>
-          <div className='header'>Howdy {user.displayName}</div>
-          <button onClick={() => createGame()} className='new-game'>
-            Plan a new game
-          </button>
-          {userGames && userGames.length > 0 && userGames.sort((a, b) => b.created - a.created).map((game) => gameItem(game))}
+          <div className={styles.header}>Howdy {user.displayName}</div>
+          <Button onClick={() => createGame()} text='Plan a new game' />
+          {userGames &&
+            userGames.length > 0 &&
+            userGames.sort((a, b) => b.created - a.created).map((game) => gameItem(game))}
         </>
       ) : (
-        <div className='admin'>
-          <h1 className='header'>Login</h1>
-          <button className='login-button' onClick={() => loginWithGoogle()}>
-            Login with Google
-          </button>
+        <div className={styles.admin}>
+          <h1 className={styles.header}>Login</h1>
+          <Button onClick={() => loginWithGoogle()} text='Login with Google' />
         </div>
       )}
     </div>

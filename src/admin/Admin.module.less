@@ -1,0 +1,71 @@
+.admin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: initial;
+  padding: 2rem;
+}
+
+.header {
+  font-size: 5rem;
+  margin: 0 0 1rem 0;
+  color: #123094;
+  text-shadow: -3px -3px 9px rgba(255, 255, 255, 0.2), 3px 3px 9px rgba(12, 32, 100, 0.7);
+  outline: none;
+}
+
+.gameItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2rem;
+  padding: 0.4rem 2rem;
+  width: 70%;
+  height: 2em;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 41px;
+  color: #fff;
+  background: #123094;
+  box-shadow: 5px 5px 9px rgba(12, 32, 100, 0.5), -5px -5px 9px rgba(255, 255, 255, 0.1);
+  -webkit-appearance: none;
+  border-radius: 9px;
+  border: none;
+}
+
+.itemDetails {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 41px;
+  width: 100%;
+
+  @media screen and (min-width: 740px) {
+    font-size: 20px;
+  }
+
+  > div {
+    padding-right: 8px;
+    margin: -10px 0;
+  }
+
+  .gameName {
+    white-space: nowrap;
+  }
+}
+
+.modify {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  height: initial;
+  margin-top: 2rem;
+  padding: 0.4rem 2rem;
+  box-shadow: 5px 5px 9px rgba(12, 32, 100, 0.5), -5px -5px 9px rgba(255, 255, 255, 0.1);
+  -webkit-appearance: none;
+  border-radius: 9px;
+  border: none;
+}

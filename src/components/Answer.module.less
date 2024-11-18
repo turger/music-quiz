@@ -1,11 +1,11 @@
-.Answer {
+.answer {
   display: flex;
   flex-direction: column;
   text-align: initial;
   width: 55vw;
 }
 
-.Answer-content {
+.content {
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -13,7 +13,7 @@
   margin-top: 1em;
 }
 
-.Answer-content>label {
+.label {
   font-size: 2em;
   margin-top: 0.67em;
   margin-bottom: 0.67em;
@@ -22,7 +22,7 @@
   font-weight: bold;
 }
 
-.Answer-input {
+.input {
   width: 287px;
   height: 49px;
   background: #123094;
@@ -35,15 +35,15 @@
   padding-left: 5px;
 }
 
-.Answer-submit-buttons {
+.submitButtons {
   display: flex;
   justify-content: space-around;
   width: 100%;
   align-items: center;
 }
 
-.Answer-next,
-.Answer-ready {
+.next,
+.ready {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,11 +61,11 @@
   border: none;
 }
 
-.Answer-ready {
+.ready {
   width: 8.5rem;
 }
 
-.Answer-back {
+.back {
   font-weight: 700;
   font-size: 30px;
   color: #fff;
@@ -75,29 +75,29 @@
 }
 
 @media screen and (max-width: 420px) {
-  .Answer {
+  .answer {
     width: initial;
   }
 
-  .Answer-content {
+  .content {
     flex-direction: column;
   }
 
-  .Answer-content>label {
+  .label {
     align-self: start;
     margin-bottom: 1rem !important;
   }
 
-  .Answer-input {
+  .input {
     margin: initial;
   }
 
-  .Answer-back {
+  .back {
     margin: 3rem 1rem 0 0;
   }
 
-  .Answer-next,
-  .Answer-ready {
+  .next,
+  .ready {
     margin-top: 3rem;
   }
 }

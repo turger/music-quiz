@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react'
-import {NavigateFunction} from 'react-router-dom'
-import {Game, Field, AnswerField} from '../types'
-import {getFields} from '../service/firebaseDB'
-import './Answer.css'
-import {getLocalStorageAnswerItem} from "./utils";
+import React, { useState, useEffect } from 'react'
+import { NavigateFunction } from 'react-router-dom'
+import { getFields } from '../service/firebaseDB'
+import { getLocalStorageAnswerItem } from './utils'
+import { Game, Field, AnswerField } from '../types'
+import styles from './Answer.module.less'
 
 type AnswerProps = {
   songNumber: number
@@ -11,7 +11,7 @@ type AnswerProps = {
   navigate: NavigateFunction
 }
 
-const Answer = ({songNumber, game, navigate}: AnswerProps) => {
+const Answer = ({ songNumber, game, navigate }: AnswerProps) => {
   const getAnswersFromLocalStorage = () => {
     const answers = localStorage.getItem(getLocalStorageAnswerItem(game.id, songNumber))
 
@@ -24,7 +24,6 @@ const Answer = ({songNumber, game, navigate}: AnswerProps) => {
   const [songCount, setSongCount] = useState<number>(0)
   const [fields, setFields] = useState<Field[]>([])
   const [answers, setAnswers] = useState<AnswerField[]>(getAnswersFromLocalStorage())
-
 
   useEffect(() => {
     if (game && game?.songs) {
@@ -54,7 +53,7 @@ const Answer = ({songNumber, game, navigate}: AnswerProps) => {
       updatedAnswer.value = value
       setAnswers([...answers.filter((a) => a.fieldId !== fieldId), updatedAnswer])
     } else {
-      setAnswers([...answers, {fieldId, value}])
+      setAnswers([...answers, { fieldId, value }])
     }
   }
 
@@ -81,39 +80,29 @@ const Answer = ({songNumber, game, navigate}: AnswerProps) => {
   }
 
   if (!game) {
-    return (
-      <div className='Answer'>
-        No game found
-      </div>
-    )
+    return <div className={styles.answer}>No game found</div>
   }
 
   if (!songCount || songCount === 0) {
-    return (
-      <div className='Answer'>
-        No songs found
-      </div>
-    )
+    return <div className={styles.answer}>No songs found</div>
   }
 
   if (!fields) {
-    return (
-      <div className='Answer'>
-        No fields found
-      </div>
-    )
+    return <div className={styles.answer}>No fields found</div>
   }
 
   return (
-    <div className='Answer'>
-      {fields.map(field => {
-        const value = answers.find(a => a.fieldId === field.id)?.value || ''
+    <div className={styles.answer}>
+      {fields.map((field) => {
+        const value = answers.find((a) => a.fieldId === field.id)?.value || ''
         return (
-          <div className='Answer-content' key={`field-${field.id}`}>
-            <label htmlFor={field.name}>{field.name}</label>
+          <div className={styles.content} key={`field-${field.id}`}>
+            <label className={styles.label} htmlFor={field.name}>
+              {field.name}
+            </label>
             <input
-              className='Answer-input'
-              type='text'
+              className={styles.input}
+              type=' text'
               id={field.name}
               name={field.name}
               value={value}
@@ -122,24 +111,23 @@ const Answer = ({songNumber, game, navigate}: AnswerProps) => {
           </div>
         )
       })}
-      <div className='Answer-submit-buttons'>
+      <div className={styles.submitButtons}>
         {songNumber > 1 && (
-          <div onClick={handleBack} className='Answer-back'>
+          <div onClick={handleBack} className={styles.back}>
             Back
           </div>
         )}
         {songNumber < songCount && (
-          <button onClick={handleNext} className='Answer-next'>
+          <button onClick={handleNext} className={styles.next}>
             Next
           </button>
         )}
         {songNumber === songCount && (
-          <button onClick={handleReady} className='Answer-ready'>
+          <button onClick={handleReady} className={styles.ready}>
             Ready
           </button>
         )}
       </div>
-
     </div>
   )
 }

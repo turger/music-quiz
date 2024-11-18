@@ -1,39 +1,28 @@
-.game-editor {
+.gameEditor {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.game-add-new-fields {
-  display: flex;
-}
-
-.game-form-row {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-.game-form-modify {
+.modify {
   border: 1px solid white;
   border-radius: 40px;
   padding: 20px;
   background-color: #123094;
 
-  .game-form-row {
+  .formRow {
     flex-direction: row;
     justify-content: center;
   }
 }
 
-.game-form-row-remove {
+.formRow {
   display: flex;
-  flex-direction: row;
-  font-size: 16px;
   align-items: center;
+  flex-direction: column;
 }
 
-.game-form-row-content {
+.formRowContent {
   display: flex;
   flex-direction: column;
   margin: 20px;
@@ -46,7 +35,7 @@
   }
 }
 
-.game-form-row-content>label {
+.contentLabel {
   display: flex;
   flex-direction: column;
   font-size: 18px;
@@ -58,18 +47,25 @@
   }
 }
 
-.game-form-row-content>label>input {
+.contentInput {
   margin: 0 20px;
   padding: 0 20px;
 }
 
-.game-form-actions {
+.formActions {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.game-form-actions :first-child {
+.formActions:first-child {
   margin-bottom: 1rem;
   display: flex;
+}
+
+.formRowRemove {
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+  align-items: center;
 }

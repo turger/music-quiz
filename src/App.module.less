@@ -1,4 +1,4 @@
-.App {
+.app {
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -6,7 +6,7 @@
   margin: 1rem;
 }
 
-.App-header {
+.header {
   font-size: 5rem;
   margin: 0 0 1rem 0;
   color: #123094;
@@ -14,7 +14,15 @@
   outline: none;
 }
 
-.App-song-number {
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 70vh;
+}
+
+.songNumber {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -27,33 +35,25 @@
   box-shadow: 7px 7px 12px rgba(12, 32, 100, 0.7), -7px -7px 12px rgba(255, 255, 255, 0.1);
 }
 
-.App-song-number-text {
+.songNumberText {
   color: #fff;
   font-weight: 900;
   font-size: 3rem;
   text-shadow: 2px 2px 7px rgba(12, 32, 100, 0.5);
 }
 
-.App-exit-game {
+.exitGame {
   margin-top: 6rem;
 }
 
-.App-game {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  height: 70vh;
-}
-
-.App-game-existing {
+.existing {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.App-game-existing > label > input {
+.gameInput {
   display: flex;
   flex-direction: column;
   font-size: 2rem;
@@ -69,21 +69,17 @@
 }
 
 @media screen and (max-width: 4200px) {
-  .App-header {
+  .header {
     font-size: 3.5rem;
   }
 
-  .App-song-number {
+  .songNumber {
     margin: 1rem;
     width: 70px;
     height: 70px;
   }
 
-  .App-song-number-text {
+  .songNumberText {
     font-size: 2.2rem;
-  }
-
-  h1 {
-    font-size: 1.5rem;
   }
 }

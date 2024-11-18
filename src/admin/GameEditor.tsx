@@ -1,17 +1,18 @@
-import {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import ShortUniqueId from 'short-unique-id'
-import {getSongs, getFields, writeSongs} from '../service/firebaseDB'
-import {Song, FirebaseUser, Game, Field, SongField} from '../types'
-import './GameEditor.css'
+import { getSongs, getFields, writeSongs } from '../service/firebaseDB'
+import Button from '../components/Button'
+import { Song, FirebaseUser, Game, Field, SongField } from '../types'
+import styles from './GameEditor.module.less'
 
-const uid = new ShortUniqueId({length: 5})
+const uid = new ShortUniqueId({ length: 5 })
 
 const defaultFields: Field[] = [
-  {id: uid.rnd(), created: Date.now(), name: 'Artist'},
-  {id: uid.rnd(), created: Date.now() + 1, name: 'Song name'}
+  { id: uid.rnd(), created: Date.now(), name: 'Artist' },
+  { id: uid.rnd(), created: Date.now() + 1, name: 'Song name' },
 ]
 
-const GameEditor = ({user, game}: {user: FirebaseUser; game: Game}) => {
+const GameEditor = ({ user, game }: { user: FirebaseUser; game: Game }) => {
   const [songs, setSongs] = useState<Song[]>([])
   const [saved, setSaved] = useState(false)
   const [fields, setFields] = useState<Field[]>([])
@@ -20,13 +21,13 @@ const GameEditor = ({user, game}: {user: FirebaseUser; game: Game}) => {
   const emptyField = {
     id: uid.rnd(),
     created: Date.now(),
-    name: ''
+    name: '',
   }
 
   const emptySong = {
     id: uid.rnd(),
     created: Date.now(),
-    fields: []
+    fields: [],
   }
 
   useEffect(() => {
@@ -60,16 +61,23 @@ const GameEditor = ({user, game}: {user: FirebaseUser; game: Game}) => {
     setSongs(songs.filter((song) => song.id !== songId))
   }
 
-  const handleSongChange = (e: React.ChangeEvent<HTMLInputElement>, songId: string, fieldId: string) => {
+  const handleSongChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    songId: string,
+    fieldId: string,
+  ) => {
     const value = e.target.value as string
     const updatedSong = songs.find((s) => s.id === songId) as Song
     if (updatedSong) {
-      const updatedSongField = updatedSong.fields?.find(sf => sf.fieldId === fieldId) as SongField
+      const updatedSongField = updatedSong.fields?.find((sf) => sf.fieldId === fieldId) as SongField
       if (updatedSongField) {
         updatedSongField.value = value
-        updatedSong.fields = [...updatedSong.fields.filter((sf) => sf.fieldId !== fieldId), updatedSongField]
+        updatedSong.fields = [
+          ...updatedSong.fields.filter((sf) => sf.fieldId !== fieldId),
+          updatedSongField,
+        ]
       } else {
-        updatedSong.fields = [...updatedSong.fields, {fieldId, value}]
+        updatedSong.fields = [...updatedSong.fields, { fieldId, value }]
       }
     }
 
@@ -113,19 +121,22 @@ const GameEditor = ({user, game}: {user: FirebaseUser; game: Game}) => {
   }
 
   return (
-    <div className='game-editor' key={game.id}>
-      <button className='large-button' onClick={() => setModifyFieldsOpen(!modifyFieldOpen)}>
-        {modifyFieldOpen ? 'Close field editing' : 'Click to customize field names'}
-      </button>
-      <form className='game-form'>
-        <div className='game-form-modify' hidden={!modifyFieldOpen}>
+    <div className={styles.gameEditor} key={game.id}>
+      <Button
+        onClick={() => setModifyFieldsOpen(!modifyFieldOpen)}
+        text={modifyFieldOpen ? 'Close field editing' : 'Click to customize field names'}
+      />
+      <form>
+        <div className={styles.modify} hidden={!modifyFieldOpen}>
           <p>Modify custom fields</p>
-          {fields.sort((a: Field, b: Field) => a.created - b.created)
+          {fields
+            .sort((a: Field, b: Field) => a.created - b.created)
             .map((field, i) => (
-              <div className='game-form-row' key={`form-row-${i}`}>
-                <div className='game-form-row-content'>
-                  <label>
+              <div className={styles.formRow} key={`form-row-${i}`}>
+                <div className={styles.formRowContent}>
+                  <label className={styles.contentLabel}>
                     <input
+                      className={styles.contentInput}
                       type='text'
                       name={field.id}
                       value={field.name}
@@ -133,31 +144,29 @@ const GameEditor = ({user, game}: {user: FirebaseUser; game: Game}) => {
                     />
                   </label>
                 </div>
-                <button className='small-button mini' onClick={(e) => removeField(e, field.id)}>
-                  –
-                </button>
+                <Button type='mini' onClick={(e) => removeField(e, field.id)} text='-' />
               </div>
             ))}
-          <div className='game-form-actions'>
-            <button className='small-button mini' onClick={(e) => addField(e)}>
-              +
-            </button>
+          <div className={styles.formActions}>
+            <Button type='mini' onClick={(e) => addField(e)} text='+' />
           </div>
         </div>
-        {
-          songs &&
+        {songs &&
           songs
             .sort((a: Song, b: Song) => a.created - b.created)
             .map((song, i) => (
-              <div className='game-form-row' key={song.id}>
-                <div className='game-form-row-content'>
+              <div className={styles.formRow} key={song.id}>
+                <div className={styles.formRowContent}>
                   <p>Song {i + 1}.</p>
-                  {fields.map(field => {
-                    const value = song.fields ? song.fields.find(sf => sf.fieldId === field.id)?.value : ''
+                  {fields.map((field) => {
+                    const value = song.fields
+                      ? song.fields.find((sf) => sf.fieldId === field.id)?.value
+                      : ''
                     return (
-                      <label key={`song-${field.id}`}>
+                      <label className={styles.contentLabel} key={`song-${field.id}`}>
                         {i + 1}. {field.name}
                         <input
+                          className={styles.contentInput}
                           type='text'
                           name={field.id}
                           value={value}
@@ -167,27 +176,19 @@ const GameEditor = ({user, game}: {user: FirebaseUser; game: Game}) => {
                     )
                   })}
                 </div>
-                <div className="game-form-row-remove">
-                  <button className='small-button mini' onClick={(e) => removeSong(e, song.id)}>
-                    –
-                  </button>
+                <div className={styles.formRowRemove}>
+                  <Button type='mini' onClick={(e) => removeSong(e, song.id)} text='-' />
                   Remove Song {i + 1}
                 </div>
               </div>
-            ))
-        }
-        <div className='game-form-actions'>
-          <button className='small-button mini' onClick={(e) => addSong(e)}>
-            +
-          </button>
-
-          <button className='small-button' onClick={(e) => onSave(e)}>
-            Save
-          </button>
+            ))}
+        <div className={styles.formActions}>
+          <Button type='mini' onClick={(e) => addSong(e)} text='+' />
+          <Button onClick={(e) => onSave(e)} text='Save' />
           {saved && 'Tallennettu'}
         </div>
       </form>
-    </div >
+    </div>
   )
 }
 

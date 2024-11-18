@@ -1,12 +1,13 @@
-import React, {useState, useEffect} from 'react'
-import {useParams, useNavigate} from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import Answer from './components/Answer'
-import {getGameById} from './service/firebaseDB'
-import {Game} from './types'
-import './App.css'
+import Button from './components/Button'
+import { getGameById } from './service/firebaseDB'
+import { Game } from './types'
+import styles from './App.module.less'
 
 const App = () => {
-  const {gameId: gameIdParam, songId} = useParams()
+  const { gameId: gameIdParam, songId } = useParams()
   const songNumber = songId ? Number(songId) : 1
 
   const [gameId, setGameId] = useState(gameIdParam || localStorage.getItem('gameId') || '')
@@ -16,7 +17,7 @@ const App = () => {
   const navigate = useNavigate()
 
   const getAndSetGame = async (gameId: string) => {
-    const game = await getGameById(gameId) as Game
+    const game = (await getGameById(gameId)) as Game
     if (game) {
       setGame(game)
       navigate(`/${game.id}/answer/${songNumber}`)
@@ -57,13 +58,14 @@ const App = () => {
   }
 
   return (
-    <div className='App'>
-      <h1 className='App-header'>Music Quiz</h1>
+    <div className={styles.app}>
+      <h1 className={styles.header}>Music Quiz</h1>
       {!game && (
-        <div className='App-game'>
-          <div className='App-game-existing'>
+        <div className={styles.game}>
+          <div className={styles.existing}>
             <label>
               <input
+                className={styles.gameInput}
                 type='text'
                 name='artist'
                 value={gameId}
@@ -73,30 +75,20 @@ const App = () => {
                 }}
               />
             </label>
-            <button className='small-button' onClick={(e) => goToGame(e)}>
-              Go to game
-            </button>
+            <Button onClick={(e) => goToGame(e)} text='Go to game' />
           </div>
-          <div className='App-game-new'>
-            <button className='small-button' onClick={(e) => createNewGame(e)}>
-              Create a new game
-            </button>
-          </div>
-          <div className='App-game-info'>
-            <button className='small-button' onClick={(e) => goToInfoPage(e)}>
-              Go to info page
-            </button>
-          </div>
+          <Button onClick={(e) => createNewGame(e)} text='Game creation' />
+          <Button onClick={(e) => goToInfoPage(e)} text='Go to info page' />
         </div>
       )}
       {error && <div>{error}</div>}
       {game && (
         <>
-          <div className='App-song-number'>
-            <h1 className='App-song-number-text'>{songNumber}.</h1>
+          <div className={styles.songNumber}>
+            <h1 className={styles.songNumberText}>{songNumber}.</h1>
           </div>
-          <Answer game={game} songNumber={songNumber} navigate={navigate}/>
-          <span className='App-exit-game' onClick={(e) => exitGame(e)}>
+          <Answer game={game} songNumber={songNumber} navigate={navigate} />
+          <span className={styles.exitGame} onClick={(e) => exitGame(e)}>
             (exit game here)
           </span>
         </>
