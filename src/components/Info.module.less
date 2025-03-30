@@ -5,6 +5,19 @@
 }
 
 .qr {
-  max-height: 70vh;
-  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1rem;
+
+  svg {
+    border: 1rem solid white;
+    border-radius: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .qr {
+    height: 70vh;
+  }
 }
